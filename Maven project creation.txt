@@ -1,0 +1,167 @@
+if plugin issue
+install jenkins 2.492.3 on amazon Linux
+
+go step wise
+     sudo yum install jenkins -y     ,add *
+
+add plugins
+java int
+maven int
+
+
+mount command
+yum install maven
+mvn -v  ,will get the maven home path and java runtime path
+go to jenkins
+source code management - select git
+repo url - paste the repo's http url
+
+branch specifier - main
+
+[root@jenkinserver ~]# sudo mount -o remount,size=2G /tmp
+[root@jenkinserver ~]# df -h
+[root@jenkinserver ~]# vim /etc/fstab
+systemctl  daemon-reload
+mount -a
+systemctl restart Jenkins
+
+in Jenkins
+new item
+item name - tomcat-project
+select maven project
+select git in source code management
+paste repo url from git by changing to https
+apply
+save
+
+final output should be .war
+
+build now
+check console output
+
+
+in root
+cd /var/lib/Jenkins
+ll
+cd /tomcat-project   ,will get from ll
+ll
+cd webapp/
+ll
+cd target/
+
+
+
+
+create another instance -tomcat , same key
+create new sec group for this instance and assign 8080
+
+open terminal 
+sudo su - 
+hostnamectl set-hostname tomcat.example.com
+yum install java 
+yum install wget -y
+download tomcat 9
+left panel - tomcat 9 -second link  zip(pgp)-rightclick on zip-copy
+
+
+#wget paste
+unzip it by writing 
+#tar -zvxf apache-tomcat-9.0.55.tar.gz
+unzip paste
+ll
+cd apache-tomcat-9.0.109
+[root@tomcat-server apache-tomcat-9.0.109]# ll
+[root@tomcat-server apache-tomcat-9.0.109]# cd bin/
+[root@tomcat-server bin]# ll
+[root@tomcat-server bin]# chmod +x startup.sh
+[root@tomcat-server bin]# chmod +x shutdown.sh
+[root@tomcat-server bin]# ./startup.sh
+[root@tomcat-server bin]# ./shutdown.sh
+ll
+
+
+[root@tomcat-server ~]# cd (click tab after apa o auto complete) apache-tomcat-9.0.109/
+#cd conf/
+ll
+vim tomcat-users.xml
+#copy rolename rom medium
+paste before vim user-->
+
+
+
+cd
+cd apache-tomcat-9.0.109/
+#find -name context.xml
+//will show all files ,need to comment out the last 3
+add vim, then paste the filename that needs to be commented out
+do 3 times.
+comment out the valve part by (image)
+
+
+
+
+
+
+
+
+
+
+
+
+
+/////mv apache-tomcat-9.0109-src.zip/temp
+
+
+go inside bin from tomcat-9.0.109
+chmod +x startup.sh
+chmod +x shutdown.sh
+
+
+
+copy public ip from instance - paste:8080
+cd /conf/
+#vim tomcat-users.xml
+paste role name
+
+#find -name context.html
+paste -
+./conf/context.xml
+./webapps/examples/META-INF/context.xml
+./webapps/host-manager/META-INF/context.xml
+./webapps/manager/META-INF/context.xml
+#vim ./webapps/host-manager/META-INF/context.xml
+inside tomcat
+follow doc
+
+cd apache.-tomcat
+
+
+go to Jenkins
+manage jenkins
+credentials
+add credentials
+
+
+go to conf
+build setting
+add post build actions
+select deploy var file to container
+inside war file
+**/*.war
+inside contnt path
+
+crendentials - deployer/*****
+tomcaturl - copy paste
+apply save
+
+build now
+
+if you change anything in git, commit
+build again(optional)
+
+
+
+after tomcat starts
+
+
+

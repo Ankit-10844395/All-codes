@@ -1,0 +1,810 @@
+whoami -> command to know the name of current user
+
+su -  -> command to switch user to root 
+
+
+bash 
+
+ip a s
+
+
+$ -> regular user
+
+#(she)-> root user/ admin
+
+dig google.com
+
+ping google.com
+
+cat  --> to read / insert somwthing in a file
+
+less
+
+nl
+
+q ->quit
+
+touch -> allows us to create a file syntax : touch filename
+
+ll -> to list all files and directories with info
+
+ls -> to list files 
+
+mkdir -> to created a new directory syntax : mkdir dir_name 
+
+rm -> remove command for a file  syntax : rm filename / rm -r dir_name
+
+rmdir  -> remove command for a directory
+
+clear -> to clear the screen
+
+rm --help
+
+why when a root user does rm and tries to remove a file he gets a warning but regular user does not gets why ?
+
+Ans ) the root user gets warning when he tries to remove the file while the regular user does not gets is because root user has write access provided while regular user does not have write access hence to protect loss of data a warning is generated.
+
+alias cls=clear  -> how to give nicknames or reference names -> to give alias to a command or keyword
+
+cal -> to view calender of 1 month
+
+cal -3 -> shows calender of 3 months
+
+cal -y -> calender for a year
+
+in Linux we have 3 types of user 1> super user(root,power user, admin)  2>system user(httpd,smbd,sshd)  3> normal user/regular user 
+
+cat /etc/passwd -> shows all user we have created belonging to primary group
+
+:/:: -> field separator
+
+uid : temproray no.s given by backend system user 
+grp id : by default system user puts the user in primary grp
+
+u can set a passwd for a new user using command : passwd username
+
+there are 3 $ and after 3rd $ to number there is salt value / passwd
+
+chage -d 5 -E 10 -I 3 -m 30 -M 99 -W 15 devops
+
+
+:w -> to save 
+:q -> to quit
+
+cat /etc/shadow
+
+vim /etc/login.defs
+
+to add new user use 
+
+useradd name_of_user
+
+to change passwd use 
+
+passwd name_of_user
+
+retype the passwd
+
+to cHANGE POLICIES USE 
+
+chage --help
+
+chage -d 5 -E 10 -I 3 -m 30 -M 99 -W 15 user_name
+
+to permanently change policies use
+
+vim /etc/login.defs
+
+to insert use -> i
+to save use  -> :w
+to quit use  -> :q
+
+to change the policy go to max days , min days , min notice 
+
+to forcefull save in editor use :-
+
+:wq!
+TO ACTIVATE /DEACTIVATE A USER 
+
+su -user_name
+
+touch devops{1..10}
+
+exit -> to comeback to root
+
+usermod --help
+usermod -s /sbin/nologin jacksparrow --> to hide the user no one can access even if they have password
+
+/bin/bash -> anyone can login
+
+usermod -s /bin/bash jacksparrow
+
+cat /etc/passwd
+
+**************************************************************************************************************************some imp commands 
+
+cd /home/
+
+cd jacksparrow/
+
+userdel jacksparrow
+
+cat /etc/passwd | grep -i jacksparrow
+
+ll
+
+useradd -d /home/jacksparrow/ pratiksha
+
+usermod -L jacksparrow
+
+giving owner ship to
+ a new user
+
+
+d -> directory = 
+r-> read =4pratiksha
+w-> write =2
+x->execute =1
+
+
+chmod 777 folder/directory
+
+other :- people who dont come under any groups r-x
+
+group :- r-x
+
+owner :- all permission drwx 
+
+
+chown pratiksha /home/jacksparrow/
+
+chgrp  pratiksha /home/jacksparrow/
+
+cd /home/
+
+chown -R pratiksha /home/jacksparrow/
+
+chgrp -R pratiksha /home/jacksparrow/
+
+cat > devops.txt -> to write something
+
+l.  -> for hidden files
+cat.
+
+cat .bash_history
+
+vim .bashrc 
+
+groupadd user_name
+
+vim /etc/groups -> to see all users in a groups
+
+usermod -G sales Sanjaya
+
+cat /etc/group |grep -i sales
+
+usermod -aG mktg devops
+
+
+
+control services and daemons :-
+
+yum install httpd
+yum install curl
+
+systemctl start httpd
+systemctl enable httpd
+cd /var/www/html/
+vim /etc/httpd/conf/httpd.conf
+
+systemctl restart httpd -> so that editor reads our changes
+editor will open you can keep the port as 80 or change it to 81 save it 
+after changing port go to aws instances-> security groups -> edit inbound -> if port is 80 use http if port is 81 use custom tcp and keep dir as 0.0.0./
+
+now do
+curl public ip in aws cloud : port no
+run it in browser
+output should be same in both cases
+
+
+
+
+git branching :-
+
+cd /dev-one/
+git branch
+git branch stage
+git checkout stage -> to move to other branch
+git branch
+ll
+vim index.html
+git add .
+git commit -m lti-devops index.html
+
+
+git checkout master
+ll
+cat index.html
+git checkout stage
+git merge master -> nhi hoga first go to master 
+git checkout master
+cat index.html
+git merge stage
+cat index.html
+git branch -d devops
+
+
+
+
+whats the difference between git shadow 
+c
+
+
+
+user id ps no.
+password date of birth ddmmyyyy
+change login password
+update pan and aadhar details in form 11
+pf and gratuity forms all employees
+print sign or digitally signed
+payroll > profile card > my bank
+for any query go to ssc helpdesk raise a query/ticket  in escalation matrix
+
+
+http://44.195.129.194:8080/
+
+http://13.220.168.218:8080/
+
+
+a1402tiwari10844395-web
+
+create fork of your existing repository and webhook
+maven
+connect to container
+
+
+cd conf/
+vim tomcat-users.xml
+
+
+
+
+day 2 .txt :--------------------------------------------------------------------------------------
+
+
+
+#cat > swayam.txt
+kajkjakajka
+#cat swayam.txt
+
+sales group creation prior to this in D1
+#mkdir /lti
+#ll -d /lti    ,lists the details of /lti rather than listing its content.
+#chgrp sales /lti/
+#ll -d /lti/
+
+
+
+max permission for directory - 777
+max permission for file - 666 as file will have read and write access
+
+umask manages default permissions.
+777 - 022 = 755 - default permission for folder
+666 - 022 = 644 - default permission for file
+
+
+# umask
+# l.
+# vim .bashrc
+
+umask manages default permissions
+
+
+change rwx policies
+# echo "umask 002" >> ~/.bashrc
+[root@ip-172-31-92-148 ~]# mkdir /sandata
+[root@ip-172-31-92-148 ~]# ll -d /sandata/
+
+new permissions does not gets applied after changing using echo umask.
+#source .bashrc ,is used to explicitly read changes without getting exited from the current session (forcefully), otherwise we can terminate and restart/ by quitting.
+
+eg:
+[root@ip-172-31-92-148 ~]# umask
+0022
+[root@ip-172-31-92-148 ~]# l.
+.bash_logout  .bash_profile  .bashrc  .cshrc  .ssh  .tcshrc
+[root@ip-172-31-92-148 ~]# vim.bashrc
+-bash: vim.bashrc: command not found
+[root@ip-172-31-92-148 ~]# vim .bashrc
+[root@ip-172-31-92-148 ~]# echo "umask 002" >> ~/.bashrc
+[root@ip-172-31-92-148 ~]# mkdir /sandata
+[root@ip-172-31-92-148 ~]# ll -d /sandata/
+drwxr-xr-x. 2 root root 6 Sep 23 04:19 /sandata/  , did not change
+[root@ip-172-31-92-148 ~]# source .bashrc      , to explicitly force the terminal to read the changes
+[root@ip-172-31-92-148 ~]# mkdir /swayammm
+[root@ip-172-31-92-148 ~]# ll -d /swayammm/
+drwxrwxr-x. 2 root root 6 Sep 23 04:21 /swayammm/
+[root@ip-172-31-92-148 ~]#
+
+group can now write.
+
+[root@ip-172-31-92-148 ~]# su - swayam
+Last login: Tue Sep 23 04:06:30 UTC 2025 on pts/1
+[swayam@ip-172-31-92-148 ~]$ cat > test.txt
+hello everyone
+^C
+[swayam@ip-172-31-92-148 ~]$ cat test.txt
+hello everyone
+[swayam@ip-172-31-92-148 ~]$ exit
+logout
+[root@ip-172-31-92-148 ~]# su - swayamm
+[swayamm@ip-172-31-92-148 ~]$ cat > test.txt
+hello there
+^C
+[swayamm@ip-172-31-92-148 ~]$ cat test.txt
+hello there
+[swayamm@ip-172-31-92-148 ~]$ exit
+logout
+[root@ip-172-31-92-148 ~]# su - swayamm
+Last login: Tue Sep 23 04:32:05 UTC 2025 on pts/1
+[swayamm@ip-172-31-92-148 ~]$ cat > test1.txt
+can you delete
+^C
+[swayamm@ip-172-31-92-148 ~]$ exit
+logout
+[root@ip-172-31-92-148 ~]# su - swayam
+Last login: Tue Sep 23 04:31:29 UTC 2025 on pts/1
+[swayam@ip-172-31-92-148 ~]$ rm -rf test1.txt
+[swayam@ip-172-31-92-148 ~]$ exit
+logout
+[root@ip-172-31-92-148 ~]# su -swayamm
+su: failed to execute wayamm: No such file or directory
+[root@ip-172-31-92-148 ~]# su - swayamm
+Last login: Tue Sep 23 04:34:00 UTC 2025 on pts/1
+[swayamm@ip-172-31-92-148 ~]$ cat test1.txt
+can you delete
+[swayamm@ip-172-31-92-148 ~]$
+
+one user can delete the resouces of other users in the same group.
+to prevent it, we use stickybit
+#chmod o+t /sales/
+-t will be added. 
+
+#su -Pratik
+#cd /mktgdata/
+#cat > prat.txt
+#jshjshjshjs
+#exit
+
+#su -devops
+#cd /mktgdata/
+#ll
+#rm -rf prat.txt
+cannot delete now
+
+when prat wants to modify devops file, not possible.
+one more security comes to picture - sgid - applied for groups
+#ll -d /mktgdata/
+#chmod g+s /mktgdata/
+#ll -d /mktgdata/
+will see a 's' permission
+
+now login as prat
+# cd /mktgdata/
+ll
+cat> filename of devops user
+still permission denied bcz sgbit does not gets applied to previous files.
+inside prat
+# cat > training.txt
+today we r lrng devops
+#ll
+
+inside root 
+chmod -R 775 /mktgdata/
+cd /mktgdata/
+
+login from devops
+# su - devops
+cd /mktgdata/
+cat >> training.txt
+these lines append by devops user
+
+#cat training.txt
+
+----------------------------------------
+
+press i inside vim to insert or enter
+execution mode while typing
+press esc for exit - comes to insert mode, then shift :wq
+w means save and q means quit
+
+use :wq! while writing confg files as sometimes wq will not work
+
+----------------
+leno, vi and vim
+
+
+-----------
+
+
+#passwd swayam
+redhat
+redhat
+#ll -d /etc/shadow
+
+only root can read etc/shadow file
+passwd uses an agent in the bg which helps to modify the password
+
+suid is set for executable file.
+
+system binary and user binary files. - understand
+
+#whereis passwd
+#ll -d /usr/bin/passwd
+#chmod u-s /usr/bin/passwd, now this file is not executable file.
+#chmod u+s /usr/bin/passwd, to make it executable again
+
+-----------------------
+Control services and daemons
+
+applications are called as packages
+drivers are modules(usb driver, printer drivers)
+httpd should be package name when we want to host an application(iaas in windows)
+
+redhat, cintora, rawkey
+they use yum and dnf
+package manager is apt in case of apache
+while using suse, package manager is zipper
+package name can vary in amazon Linux, redhat Linux.
+apache 2 in case of ubuntu
+NFS understand in AWS.
+Amazon Linux is just a name, in bg it is centos.
+
+---------------
+#rpmquery httpd
+rpm is redhat package manager
+
+yum resolves some problem.
+yum automatically creates ...
+#yum install httpd
+#rpmquery httpd
+#cd /var/www/html
+#cat > index.html
+#systemctl status httpd
+checks the status - inactive means it is not live - not consuming cpu, resources.
+
+#curl http://localhost
+#systemctl start httpd     , to make it active
+#systemctl status httpd
+
+when u start any service, you have to make it permanent so that after booting, it will be still active
+
+#systemctl start httpd     , to make it active
+#systemctl enable httpd    , to make it active throughout
+#systemctl status httpd
+
+ll -d /var/www/html/
+#vim /etc/httpd/conf/httpd.conf
+default documentary root of apache
+by default this runs on port 80
+change to 81 byi writing I
+
+#yum install curl
+#systemctl restart httpd
+
+change the port to 81 in security groups
+#curl http://192.168.81.153:81    ,checks status of application, index.html
+
+#systemctl stop httpd    ,stops the application
+#systemctl disable httpd  ,will not come up automatically.
+but can start by code.
+
+
+it can be again restarted in the current session
+
+#systemctl mask httpd
+it will be inactive.
+masking will force the user to unmask it, start it and enable it.
+introduced by redhat rel8
+
+#systemctl unmask httpd
+#systemctl start httpd
+#systemctl enable httpd
+curl is command line browser.
+#curl http://192.168.81.153
+
+#vim /etc/httpd/conf/httpd.conf
+
+os kernel reads after restart
+
+asked not to restart(systemctl restart httpd), but without restart, machine will not read new configs.
+instead use - 
+# systemcl reload-or-restart http://192.168.81.153
+incase of reload, it will never restart, now machine will decide what will be good for the server.
+
+
+
+
+
+
+
+
+
+
+day 3 ;-_____________________________________________________________________________________________________________________________________________
+#################################################################################################################################################333
+
+
+DevOps is a process framework
+Infra is hosted by the cloud provider
+plan > developers > designing code > 
+automation is required between dev and ops to shift the application from dev to ops.
+Done through Jenkins(open source)
+
+auto scaling or Kubernetes horizontal scaling to manage heavy workload
+previous application should not go down while deploying new changes, it should be live
+
+plan - code - build - test - release - deploy - operate - monitor
+------------CI---------------------   ----------CD------------
+Cont int vs del vs dep
+
+
+Version Control
+SVC - Software version control
+GitHub is a distributed VCS (system) 
+
+git init --bare runs only on server
+when u r hosting an env, u cannot miss anything
+
+on server machine
+#cat /etc/os-release     , to check version
+# uname -r               , shows kernel
+something
+# hostnamectl set-hostname git-server.example.com
+# bash
+# hostname
+# ip a s
+# yum update -y          , to update the OS after setup
+# mkdir /code
+# cd /code
+# yum install git -y
+# git init --bare       ,as this is server
+# ls
+
+
+in dev one machine
+# mkdir /dev-two
+# hostnamectl set-hostname dev-two.example.com
+# bash
+
+
+in dev two machine
+# mkdir /dev-two
+# hostnamectl set-hostname dev-two.example.com
+# bash
+
+
+[root@git-server code]# vim /etc/hosts
+
+
+
+
+
+in devops1 dir
+# cat > index.html
+hello
+
+#git status
+no commits yet
+
+git add index.html
+git status
+git commit -m first-commit index.html
+
+to push this file in server
+
+#git remote -y
+blank means no address.
+
+ccome out once from devops1
+
+cd .ssh/
+ssh-keygen
+ll
+
+
+explicit
+
+vim authorized-keys
+have to paste ig
+cat .ssh/id_rsa.hub
+
+in root
+git log
+------------
+
+
+in dev 1
+cd /devops1
+git remote add origin root@git-server.example.com:/master
+git remote -v
+git push origin master
+git remote remove origin
+
+
+in devops-two
+
+cd /dev2/
+git clone root@git-server.example.com:/code    ,        ,copies the content of code repo completely to  devops-two machine.
+
+#cat index.html
+content made on main machine will show here as it was under code repo and is copied.
+completed
+
+
+----------------------------------------
+git remote -v      ,in d2
+inside code, as t is copied in d2
+git push origin master
+
+---------------------------------------
+
+
+-----
+to ping
+allow security groups to inbound - allow icmpv4, 0000/0
+then ping will work 
+
+
+in dev 2
+l.
+cd .ssh/
+ll
+
+
+
+for ssh keys
+
+[root@devops-one .ssh]# cd
+[root@devops-one ~]# ssh-keygen
+Generating public/private rsa key pair.
+Enter file in which to save the key (/root/.ssh/id_rsa):
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved in /root/.ssh/id_rsa
+Your public key has been saved in /root/.ssh/id_rsa.pub
+[root@devops-one ~]# cat .ssh/id_rsa.pub
+
+
+[root@devops-two ~]# vim authorized_keys
+[root@devops-two ~]# ssh-keygen
+Generating public/private rsa key pair.
+Enter file in which to save the key (/root/.ssh/id_rsa):
+/root/.ssh/id_rsa already exists.
+Overwrite (y/n)? y
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved in /root/.ssh/id_rsa
+Your public key has been saved in /root/.ssh/id_rsa.pub
+[root@devops-two ~]# cat .ssh/id_rsa.pub
+rsa key will appear, copy it
+
+in git server 
+[root@git-server ~]# vim authorized_keys
+I
+paste the copied sec-key of both the client machines
+
+-----------------------------------------------------------------
+GIT
+
+PULL ORIGIN -> MASTER
+dev 1 is on holiday
+
+in dev2
+
+vim index.html
+enter msg
+git add .
+git commit -m dev-two index.html
+git push origin -> master
+
+vim index.html
+enter msg 2
+git add .
+git commit -m update 2 done
+git push origin -> master
+
+
+dev 1 joins
+
+he wants the made changes by dev2
+clone will not work, only recent changes are req
+we can use 
+# git pull origin master
+fetched from master
+origin is updating 
+now cat index.html
+
+chabges reflect in dev1 machine - the changes made by dev 2 while dev 1 was away inside index.html
+
+now inside dev one only
+
+vim index.html
+insert message
+
+git add .
+git commit -m dev-one index.html
+git push origin master
+
+now dev2 require the changes
+git pull origin master
+cat index.html
+
+pull and clone diff understand
+
+
+
+
+-----------------------------------------------------------------
+git branching
+#git branch stage      ,create new branch named stage
+#git branch    , to check the branches available, by default master is present.
+		we have to switch from master
+#git checkout stage    ,to move to stage from current
+for the first time, adds all contents of master node to sub branch
+#git branch        ,automatically move to stage only once.
+#vim index.html
+xyz
+#git add .
+#git commit -m lti-devops index.html
+git remote -v   ,initiates
+
+now switch to master
+changes made in stage are not in master
+
+git checkout master
+git merge stage
+cat index.html
+
+git reshutter and  
+------------------------------------------------
+git branch -d stage
+ll
+
+https://github.com/sanjayguruji
+
+
+
+
+
+day4 how to start jenkins using terminal commands :-*********************************************************************************************************
+
+
+yum update -y
+dnf install java-17-amazon-corretto -y
+ 
+  sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
+ 
+rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+ 
+sudo yum install jenkins -y *
+ 
+sudo systemctl start jenkins
+sudo systemctl enable Jenkins
+
+
+
+git clone https://github.com/sanjayguruji/devops-mumbai.git
+
+
+
+
+ 
+
+
+
+
+
+
+
+
