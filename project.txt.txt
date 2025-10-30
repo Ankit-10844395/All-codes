@@ -1,0 +1,244 @@
+launch ec2 instance(jenkins-docker) with c7i-flex.large and 15gb in aws Linux
+ 
+hostnamectl set-hostname jenkins-docker.example.com
+bash 
+hostname
+vim jenkins.sh
+ 
+ 
+#!/bin/bash
+sudo yum update –y
+sudo wget -O /etc/yum.repos.d/jenkins.repo \
+https://pkg.jenkins.io/redhat-stable/jenkins.repo
+sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+sudo yum upgrade
+sudo yum install java-21-amazon-corretto -y
+sudo yum install maven -y
+sudo yum install git -y
+sudo yum install jenkins -y
+sudo systemctl start jenkins
+sudo systemctl enable jenkins
+sudo systemctl status Jenkins
+ 
+ 
+chmod +x jenkins.sh
+./jenkins.sh
+cat /var/lib/jenkins/secrets/initialAdminPassword
+ 
+mvn -v
+ 
+login to jenkins
+ 
+ 
+go to manage genkins(gear icon) -> tools set paths of java and maven
+apply and save
+ 
+download puligns -> GitHub integration, maven integration, aws credentials, pipeline stage view, pipeline graph analysis, pipeline rest wala
+ 
+click profile and click security and generate token and set this token into GitHub repository webhook 
+http://public-ip:8080/github-webhook/
+application/json
+token
+ 
+ 
+now onto the jenkins-docker instance
+vim docker.sh
+ 
+ 
+#!/bin/bash
+yum install docker -y
+systemctl start docker
+systemctl enable docker
+systemctl status docker
+ 
+ 
+chmod +x docker.sh
+./docker.sh
+aws configure
+aws ecr create-repository --repository-name my-ecr
+sudo usermod -aG docker Jenkins
+sudo systemctl restart Jenkins
+ 
+now on Jenkins ui
+ 
+go to manage Jenkins(setting)
+credentials -> global credentials-> choose aws credentials ->
+id -> awsconfig
+put IAM user access and secret key
+and save
+ 
+create a new item(devops-project)
+choose pipeline
+and click GitHub hook trigger
+ 
+ 
+pipeline script (first put script upto ecr push stage and make sure Dockerfile is there in repo) =>
+ 
+ 
+pipeline {
+    agent any
+    tools {
+        maven 'maven' 
+    }
+ 
+    stages {
+        stage('Clone Repository') {
+            steps {
+                git branch: 'main', url: 'https://github.com/Rahulpr89/M2-Devops-Project.git'
+            }
+        }
+        stage('Build with Maven') {
+            steps {
+                sh 'mvn clean package -Dmaven.test.failure.ignore=true'
+            }
+        }
+        stage('Docker iamge build and push to ecr') {
+            steps{
+             withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'awsconfig']]) {
+                    sh '''
+                    aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 832721971180.dkr.ecr.us-east-1.amazonaws.com
+                    docker build -t my-ecr .
+                    docker tag my-ecr:latest 832721971180.dkr.ecr.us-east-1.amazonaws.com/my-ecr:latest
+                    docker push 832721971180.dkr.ecr.us-east-1.amazonaws.com/my-ecr:latest
+                    '''
+                }
+        }
+        }
+        stage('Deploy to EKS') {
+            steps {
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'awsconfig']]) {
+                    sh '''
+                        aws eks update-kubeconfig --region us-east-1 --name my-cluster
+                        kubectl delete -f deployment.yaml || true
+                        kubectl apply -f deployment.yaml
+                        kubectl apply -f service.yaml
+                        kubectl rollout status deployment/regapp-deployment
+                    '''
+                }
+            }
+        }
+    }
+    post {
+        success {
+            junit '**/target/surefire-reports/TEST-*.xml'
+            archiveArtifacts artifacts: '**/target/*.war', fingerprint: true
+        }
+    }
+}
+ 
+now apply and save => and see ecr image will be there copy image url
+ 
+ 
+create deployment.yaml manifest file(put your copied image here) =>
+ 
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: regapp-deployment
+  labels:
+     app: regapp
+ 
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: regapp
+ 
+  template:
+    metadata:
+      labels:
+        app: regapp
+    spec:
+      containers:
+      - name: regapp
+        image: 832721971180.dkr.ecr.us-east-1.amazonaws.com/my-ecr:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+ 
+ 
+and one service.yaml =>
+ 
+ 
+apiVersion: v1
+kind: Service
+metadata:
+  name: regapp-service
+  labels:
+    app: regapp
+spec:
+  selector:
+    app: regapp
+ 
+  ports:
+    - port: 8080
+      targetPort: 8080
+ 
+  type: LoadBalancer
+ 
+ 
+now create a new instance eks with c7i-flex.large with 15gb(security group 8080 and all 5 or 6 k8s ports)
+ 
+hostnamectl set-hostname eks.example.com
+bash
+hostname
+vim eks.sh (put you subnet id)
+ 
+ 
+#!/bin/bash
+#################################################################################################################
+#Host EKS CLUSTER via EKSCTL
+#################################################################################################################
+#create iam role and attach policy
+#ECRfull access,EKSpolicy and IAM full access
+apt-get update -y
+apt install unzip -y
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install
+aws configure
+#Install EKS Tool
+curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+sudo mv /tmp/eksctl /usr/local/bin
+eksctl --version
+#Install Kubectl
+curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+kubectl version --client
+ssh-keygen
+#Create EKS Cluster
+eksctl create cluster --name my-cluster --region us-east-1 --version 1.32 --vpc-public-subnets subnet-065994f9e32369b62,subnet-04ca879db2cf754da --without-nodegroup
+##############################################################################################################################
+##Create a Node Group##
+##############################################################################################################################
+eksctl create nodegroup \
+  --cluster my-cluster \
+  --region us-east-1 \
+  --name my-node-group \
+  --node-ami-family Ubuntu2204 \
+  --node-type t3.small \
+  --subnet-ids subnet-065994f9e32369b62,subnet-04ca879db2cf754da \
+  --nodes 3 \
+  --nodes-min 2 \
+  --nodes-max 4 \
+  --ssh-access \
+  --ssh-public-key /root/.ssh/id_rsa.pub
+ 
+ 
+chmod +x eks.sh
+./eks.sh
+when the cluser is up
+ 
+go to jekins ui=>
+ 
+now put the remaining script for deploy eks and then build
+ 
+and then on eks instance type 
+kubectl get pods
+kubectl get svc
+put external-ip:8080/webapp
