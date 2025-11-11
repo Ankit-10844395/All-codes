@@ -1,0 +1,102 @@
+Day 1----------------------------------------------------------------------------------------------------------------------
+
+Q1-> How to create Users/ Set password /Give user the permission to create other users ?
+
+Ans->   1> create an instance on aws
+        2> open terminal connect with ssh
+        3> Sudo su -
+	4>useradd user_name   to create custom user :- useradd -u user_id user_name
+	5>passwd user_name
+	6>set password/retype passwd
+	7>in root -> whereis useradd ; whereis passwd -> to know the path of useradd and passwd
+	8> vim /etc/sudoers ->enter this file editor and add your user whom you want to give permission
+	Format:
+		user_name All=(All)  path of useradd,path of passwd :- /usr/sbin/useradd,/usr/bin/passwd
+		:wq! ->to save and exit 
+	9> Now enter the user using :- su - user_name
+	10> create a user inside that user :- Sudo useradd user_name1  -> use sudo (very imp)
+	11>set the password : sudo passwd user_name1
+	12> cat /etc/passwd ->shows all users with primary group
+	13> cat /etc/shadow -> shows all password of users
+
+
+
+Q2-> How to change policies / activate & deactivate a user / lock & unlock a user ?
+	
+Ans-> 
+Policies for a user can be changed using two method :-
+
+	1> chage -d 5 -E 10 -I 3 -m 30 -M 99 -W 15 user_name 
+
+	{ d->date of last changed password, I-> period of inactivity, E-> expiration date m->minimum date required, M-> maximum date required , w->warn}													
+	
+	2> vim /etc/login.defs  change the minimum , maximum and warn days and the policies will be permanently changed -> i-insert ; w-> save ; q-> quit 
+	3> cat /etc/shadow or cat /etc/passwd to see policies changed or not 
+
+
+Activating and Deactivating a user :-
+
+	1>usermod -s /sbin/nologin user_name -> try accesing this user using root or other user it should show error means its deactivarted
+	2>usermod -s /bin/bash user_name ->try accessing now it should be accessible its activating
+
+Lock and Unlock a user :-
+
+	1>usermod -L user_name
+	2> usermod -U user_name
+
+
+Q3-> How to create a group / add users to a group/multiple groups / change group/ownership/permission of user ?
+
+Ans->
+create groups :-
+	1>groupadd group_name ->will create the group
+	2>vim /etc/groups   -> to see your groups you have created  vim /etc/group | grep -i user -> to find if a user belongs to a group or not
+
+Add users to a group :-
+	1>usermod -G group_name user_name
+
+Add a user to multiple groups :-
+	1>usermod -aG group_name user_name
+
+changing group ownership of a file  :-
+	1>chgrp group_name file_name
+
+changing permissions of a file :-
+	1>chmod 754 file/folder/directory_name {7->root all permission , 5-> groups { permission to execute and read } ,5->others {permission to read only}
+
+changing user ownership of a file/directory :-
+	1>chown user_name file_name
+
+
+
+************************************************************************************************************************************************************
+
+
+DAY 2-----------------------------------------------------------------------------------------------------------------------
+
+
+
+Q1-> How to run /execute apache server in terminal ?
+
+Ans ->
+steps:-
+	1>Create an instance in aws cloud
+	2>connect with terminal using ssh key
+	3>sudo su -
+	4>yum install httpd -y
+	5>yum install curl -y
+	6>systemctl start httpd
+	7>systemctl enable httpd
+	8>systemctl status httpd
+	9>cd /var/www/html/
+	10> echo "I am Ankit" > index.html / cat > index.html / vim index.html ->i->I am Ankit ->:wq
+	11>cd ..
+	12>vim /etc/httpd/conf/httpd.conf -> in this editor you can change port 
+	13>if you changed the port -> systemctl restart httpd -> so that os reads your changes
+	14>Add port 80 in your instance security group with icmp all ipv4
+	15> now try to access your file via web using your instance public_ip:80 or in terminal using  curl public_ip:80
+	16> output should be same in both cases 
+
+Q2->How to use SUID /SGID/Sticky Bits ?
+
+Ans->

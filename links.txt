@@ -1,0 +1,6 @@
+#!/bin/bash
+yum install httpd -y
+echo "This server id running in GCP cloud " >> /var/www/html/index.html
+systemctl start httpd 
+systemctl enable httpd
+useradd Sanjay -p redhat -c "Sanjaya verma"

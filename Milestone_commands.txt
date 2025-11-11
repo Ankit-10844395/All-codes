@@ -1,0 +1,68 @@
+jenkins-pipeline :-
+
+(add security group custom tcp with port number 8080 t3.small )
+#sudo su -
+#hostnamectl set-hostname jenkinsexample.com  (to set hostname)
+#bash  
+#hostname  (to check hostname)
+#rpmquery Jenkins (to check whether Jenkins is installed or not)
+#yum update -y
+#yum repolist all (to check wether repo is there or not)
+#wget -O /etc/yum.repos.d/jenkins.repo \https://pkg.jenkins.io/redhat-stable/jenkins.repo  (to add Jenkins repo)
+#rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key (to import  key file from Jenkins ci)
+#yum upgrade
+#yum install java-21-amazon-corretto -y (to install java)
+yum install jenkins -y (to install Jenkins)
+systemctl enable jenkins ( to enable Jenkins service)
+systemctl start jenkins (to start Jenkins)
+systemctl status jenkins (to check status of Jenkins)
+yum install git -y
+git init
+(Copy the public ip address of Jenkins server & paste in webbrowser i/paddress:8080)
+(copy the id provided by Jenkins then come to Jenkins terminal cat ______{paste id})
+(copy the generated password and paste to Jenkins web browser)
+(login in jenkins-> install plugins you will be redirected to dashboard)
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+(to solve offline problem in jenkins{due to small size})
+(in Jenkins terminal)
+df -h
+sudo mount -o remount,size=2G /tmp
+vim /etc/fstab 
+tmpfs /tmp tmpfs defaults,noatime,mode=1777,size=2G 0 0 (paste this in vim fstab editor  :wq! to exit from it)
+systemctl daemon-reload
+reboot
+(paste the new ssh key of instance to Jenkins terminal refresh Jenkins page offline problem solved)
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+(Jenkins slowdown problem)
+(if you have stopped your instance and after restart Jenkins will slowdown)
+(go to terminal)
+#cd /var/lib/jenkins 
+#ll
+(copy the path of configuration .xmf file)
+#vim _____(paste the path)
+(inside the editor change the ip address of server instance)
+#systemctl restart jenkins
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+create new instance of same configuration
+sudo su -
+mkdir data
+cd data
+yum install git -y
+git init
+vim index.html (write some text inside it)
+ssh-keygen
+cd .ssh/
+cat id_rsa.pub
+(Now move to GitHub ->login)
+(create new repo->click on account icon->settings->ssh&gpg key->insert add ssh key)
+git add .
+git commit -m "first commit"
+git remote -v
+git remote add origin git@github.com:arpitkumar777/practice.git (paste ssh key of created repo)
+git push origin master
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+now go to Jenkins website
+build new item
+create freestyle project
+git => paste http of your repository=>build now
+$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$

@@ -1,0 +1,822 @@
+monitor.terminal commands::
+
+
+
+_______________________________________________________________________________________________________________
+
+Windows PowerShell
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+Install the latest PowerShell for new features and improvements! https://aka.ms/PSWindows
+
+PS C:\Users\10844395> cd downloads
+PS C:\Users\10844395\downloads> ssh -i "new-key.pem" ubuntu@ec2-34-207-60-48.compute-1.amazonaws.com
+The authenticity of host 'ec2-34-207-60-48.compute-1.amazonaws.com (34.207.60.48)' can't be established.
+ED25519 key fingerprint is SHA256:ew8e/xgXYWaRDfN/laLCVkGIkrmw5ykX6cy4nEC+HVw.
+This key is not known by any other names.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added 'ec2-34-207-60-48.compute-1.amazonaws.com' (ED25519) to the list of known hosts.
+Welcome to Ubuntu 24.04.3 LTS (GNU/Linux 6.14.0-1011-aws x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/pro
+
+ System information as of Tue Oct 28 11:13:28 UTC 2025
+
+  System load:  0.32              Temperature:              -273.1 C
+  Usage of /:   9.4% of 18.33GB   Processes:                158
+  Memory usage: 5%                Users logged in:          0
+  Swap usage:   0%                IPv4 address for enp39s0: 172.31.17.115
+
+Expanded Security Maintenance for Applications is not enabled.
+
+0 updates can be applied immediately.
+
+Enable ESM Apps to receive additional future security updates.
+See https://ubuntu.com/esm or run: sudo pro status
+
+
+The list of available updates is more than a week old.
+To check for new updates run: sudo apt update
+
+
+The programs included with the Ubuntu system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by
+applicable law.
+
+To run a command as administrator (user "root"), use "sudo <command>".
+See "man sudo_root" for details.
+
+ubuntu@ip-172-31-17-115:~$ sudo su -
+root@ip-172-31-17-115:~# hostnamectl set-hostname monitor.example.com
+root@ip-172-31-17-115:~# bash
+root@monitor:~# sudo useradd --system --no-create-home --shell /bin/false prometheus
+root@monitor:~# wget https://github.com/prometheus/prometheus/releases/download/v2.47.1/prometheus-2.47.1.linux-amd64.tar.gz
+--2025-10-28 11:15:12--  https://github.com/prometheus/prometheus/releases/download/v2.47.1/prometheus-2.47.1.linux-amd64.tar.gz
+Resolving github.com (github.com)... 140.82.112.3
+Connecting to github.com (github.com)|140.82.112.3|:443... connected.
+HTTP request sent, awaiting response... 302 Found
+Location: https://release-assets.githubusercontent.com/github-production-release-asset/6838921/2f9b7b37-63a0-428b-adb5-0294482fd743?sp=r&sv=2018-11-09&sr=b&spr=https&se=2025-10-28T12%3A11%3A31Z&rscd=attachment%3B+filename%3Dprometheus-2.47.1.linux-amd64.tar.gz&rsct=application%2Foctet-stream&skoid=96c2d410-5711-43a1-aedd-ab1947aa7ab0&sktid=398a6654-997b-47e9-b12b-9515b896b4de&skt=2025-10-28T11%3A10%3A48Z&ske=2025-10-28T12%3A11%3A31Z&sks=b&skv=2018-11-09&sig=KcVuLByHHj07kKn4hwSQo2JnGqkm%2FpEKTuhO5pew%2FG0%3D&jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmVsZWFzZS1hc3NldHMuZ2l0aHVidXNlcmNvbnRlbnQuY29tIiwia2V5Ijoia2V5MSIsImV4cCI6MTc2MTY1MTkxMiwibmJmIjoxNzYxNjUwMTEyLCJwYXRoIjoicmVsZWFzZWFzc2V0cHJvZHVjdGlvbi5ibG9iLmNvcmUud2luZG93cy5uZXQifQ.2edahptcoKQJwdAoKIxZC72iQacManjaAg28Ffde4e4&response-content-disposition=attachment%3B%20filename%3Dprometheus-2.47.1.linux-amd64.tar.gz&response-content-type=application%2Foctet-stream [following]
+--2025-10-28 11:15:12--  https://release-assets.githubusercontent.com/github-production-release-asset/6838921/2f9b7b37-63a0-428b-adb5-0294482fd743?sp=r&sv=2018-11-09&sr=b&spr=https&se=2025-10-28T12%3A11%3A31Z&rscd=attachment%3B+filename%3Dprometheus-2.47.1.linux-amd64.tar.gz&rsct=application%2Foctet-stream&skoid=96c2d410-5711-43a1-aedd-ab1947aa7ab0&sktid=398a6654-997b-47e9-b12b-9515b896b4de&skt=2025-10-28T11%3A10%3A48Z&ske=2025-10-28T12%3A11%3A31Z&sks=b&skv=2018-11-09&sig=KcVuLByHHj07kKn4hwSQo2JnGqkm%2FpEKTuhO5pew%2FG0%3D&jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmVsZWFzZS1hc3NldHMuZ2l0aHVidXNlcmNvbnRlbnQuY29tIiwia2V5Ijoia2V5MSIsImV4cCI6MTc2MTY1MTkxMiwibmJmIjoxNzYxNjUwMTEyLCJwYXRoIjoicmVsZWFzZWFzc2V0cHJvZHVjdGlvbi5ibG9iLmNvcmUud2luZG93cy5uZXQifQ.2edahptcoKQJwdAoKIxZC72iQacManjaAg28Ffde4e4&response-content-disposition=attachment%3B%20filename%3Dprometheus-2.47.1.linux-amd64.tar.gz&response-content-type=application%2Foctet-stream
+Resolving release-assets.githubusercontent.com (release-assets.githubusercontent.com)... 185.199.110.133, 185.199.111.133, 185.199.108.133, ...
+Connecting to release-assets.githubusercontent.com (release-assets.githubusercontent.com)|185.199.110.133|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 95713066 (91M) [application/octet-stream]
+Saving to: ‘prometheus-2.47.1.linux-amd64.tar.gz’
+
+prometheus-2.47.1.linux-amd64.tar 100%[==========================================================>]  91.28M   352MB/s    in 0.3s
+
+2025-10-28 11:15:12 (352 MB/s) - ‘prometheus-2.47.1.linux-amd64.tar.gz’ saved [95713066/95713066]
+
+root@monitor:~# tar -xvf prometheus-2.47.1.linux-amd64.tar.gz
+cd prometheus-2.47.1.linux-amd64/
+sudo mkdir -p /data /etc/prometheus
+sudo mv prometheus promtool /usr/local/bin/
+sudo mv consoles/ console_libraries/ /etc/prometheus/
+sudo mv prometheus.yml /etc/prometheus/prometheus.yml
+prometheus-2.47.1.linux-amd64/
+prometheus-2.47.1.linux-amd64/LICENSE
+prometheus-2.47.1.linux-amd64/NOTICE
+prometheus-2.47.1.linux-amd64/prometheus.yml
+prometheus-2.47.1.linux-amd64/consoles/
+prometheus-2.47.1.linux-amd64/consoles/prometheus.html
+prometheus-2.47.1.linux-amd64/consoles/prometheus-overview.html
+prometheus-2.47.1.linux-amd64/consoles/node-cpu.html
+prometheus-2.47.1.linux-amd64/consoles/index.html.example
+prometheus-2.47.1.linux-amd64/consoles/node.html
+prometheus-2.47.1.linux-amd64/consoles/node-disk.html
+prometheus-2.47.1.linux-amd64/consoles/node-overview.html
+prometheus-2.47.1.linux-amd64/promtool
+prometheus-2.47.1.linux-amd64/console_libraries/
+prometheus-2.47.1.linux-amd64/console_libraries/prom.lib
+prometheus-2.47.1.linux-amd64/console_libraries/menu.lib
+prometheus-2.47.1.linux-amd64/prometheus
+root@monitor:~/prometheus-2.47.1.linux-amd64# sudo chown -R prometheus:prometheus /etc/prometheus/ /data/
+root@monitor:~/prometheus-2.47.1.linux-amd64# vim /etc/systemd/system/prometheus.service
+root@monitor:~/prometheus-2.47.1.linux-amd64# systemctl enable prometheus
+Created symlink /etc/systemd/system/multi-user.target.wants/prometheus.service → /etc/systemd/system/prometheus.service.
+root@monitor:~/prometheus-2.47.1.linux-amd64# systemctl start prometheus
+root@monitor:~/prometheus-2.47.1.linux-amd64# systemctl status prometheus
+● prometheus.service - Prometheus
+     Loaded: loaded (/etc/systemd/system/prometheus.service; enabled; preset: enabled)
+     Active: active (running) since Tue 2025-10-28 11:20:18 UTC; 21s ago
+   Main PID: 1451 (prometheus)
+      Tasks: 7 (limit: 4526)
+     Memory: 18.6M (peak: 18.8M)
+        CPU: 50ms
+     CGroup: /system.slice/prometheus.service
+             └─1451 /usr/local/bin/prometheus --config.file=/etc/prometheus/prometheus.yml --storage.tsdb.path=/data --web.console.t>
+
+Oct 28 11:20:18 monitor.example.com prometheus[1451]: ts=2025-10-28T11:20:18.716Z caller=head.go:681 level=info component=tsdb msg=">
+Oct 28 11:20:18 monitor.example.com prometheus[1451]: ts=2025-10-28T11:20:18.716Z caller=head.go:689 level=info component=tsdb msg=">
+Oct 28 11:20:18 monitor.example.com prometheus[1451]: ts=2025-10-28T11:20:18.716Z caller=head.go:760 level=info component=tsdb msg=">
+Oct 28 11:20:18 monitor.example.com prometheus[1451]: ts=2025-10-28T11:20:18.716Z caller=head.go:797 level=info component=tsdb msg=">
+Oct 28 11:20:18 monitor.example.com prometheus[1451]: ts=2025-10-28T11:20:18.718Z caller=main.go:1045 level=info fs_type=EXT4_SUPER_>
+Oct 28 11:20:18 monitor.example.com prometheus[1451]: ts=2025-10-28T11:20:18.718Z caller=main.go:1048 level=info msg="TSDB started"
+Oct 28 11:20:18 monitor.example.com prometheus[1451]: ts=2025-10-28T11:20:18.718Z caller=main.go:1229 level=info msg="Loading config>
+Oct 28 11:20:18 monitor.example.com prometheus[1451]: ts=2025-10-28T11:20:18.723Z caller=main.go:1266 level=info msg="Completed load>
+Oct 28 11:20:18 monitor.example.com prometheus[1451]: ts=2025-10-28T11:20:18.723Z caller=main.go:1009 level=info msg="Server is read>
+Oct 28 11:20:18 monitor.example.com prometheus[1451]: ts=2025-10-28T11:20:18.723Z caller=manager.go:1009 level=info component="rule >
+
+root@monitor:~/prometheus-2.47.1.linux-amd64# tar -xvf node_exporter-1.6.1.linux-amd64.tar.gz
+sudo mv node_exporter-1.6.1.linux-amd64/node_exporter /usr/local/bin/
+rm -rf node_exporter*
+tar: node_exporter-1.6.1.linux-amd64.tar.gz: Cannot open: No such file or directory
+tar: Error is not recoverable: exiting now
+mv: cannot stat 'node_exporter-1.6.1.linux-amd64/node_exporter': No such file or directory
+root@monitor:~/prometheus-2.47.1.linux-amd64# sudo useradd --system --no-create-home --shell /bin/false node_exporter
+root@monitor:~/prometheus-2.47.1.linux-amd64# wget https://github.com/prometheus/node_exporter/releases/download/v1.6.1/node_exporter-1.6.1.linux-amd64.tar.gz
+--2025-10-28 11:32:17--  https://github.com/prometheus/node_exporter/releases/download/v1.6.1/node_exporter-1.6.1.linux-amd64.tar.gz
+Resolving github.com (github.com)... 140.82.114.4
+Connecting to github.com (github.com)|140.82.114.4|:443... connected.
+HTTP request sent, awaiting response... 302 Found
+Location: https://release-assets.githubusercontent.com/github-production-release-asset/9524057/5509b569-5c34-471e-8598-c05c0733bb7f?sp=r&sv=2018-11-09&sr=b&spr=https&se=2025-10-28T12%3A14%3A48Z&rscd=attachment%3B+filename%3Dnode_exporter-1.6.1.linux-amd64.tar.gz&rsct=application%2Foctet-stream&skoid=96c2d410-5711-43a1-aedd-ab1947aa7ab0&sktid=398a6654-997b-47e9-b12b-9515b896b4de&skt=2025-10-28T11%3A14%3A05Z&ske=2025-10-28T12%3A14%3A48Z&sks=b&skv=2018-11-09&sig=FNu9NJnuJKN4DX2MtfhKPxm3F1HzHZ%2Fj4psKlKrLnMA%3D&jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmVsZWFzZS1hc3NldHMuZ2l0aHVidXNlcmNvbnRlbnQuY29tIiwia2V5Ijoia2V5MSIsImV4cCI6MTc2MTY1MTQxMCwibmJmIjoxNzYxNjUxMTEwLCJwYXRoIjoicmVsZWFzZWFzc2V0cHJvZHVjdGlvbi5ibG9iLmNvcmUud2luZG93cy5uZXQifQ.Xa56ZPfens7XA4Ck1WBEKFhvqfOIEbzU7tCKIizqmfU&response-content-disposition=attachment%3B%20filename%3Dnode_exporter-1.6.1.linux-amd64.tar.gz&response-content-type=application%2Foctet-stream [following]
+--2025-10-28 11:32:17--  https://release-assets.githubusercontent.com/github-production-release-asset/9524057/5509b569-5c34-471e-8598-c05c0733bb7f?sp=r&sv=2018-11-09&sr=b&spr=https&se=2025-10-28T12%3A14%3A48Z&rscd=attachment%3B+filename%3Dnode_exporter-1.6.1.linux-amd64.tar.gz&rsct=application%2Foctet-stream&skoid=96c2d410-5711-43a1-aedd-ab1947aa7ab0&sktid=398a6654-997b-47e9-b12b-9515b896b4de&skt=2025-10-28T11%3A14%3A05Z&ske=2025-10-28T12%3A14%3A48Z&sks=b&skv=2018-11-09&sig=FNu9NJnuJKN4DX2MtfhKPxm3F1HzHZ%2Fj4psKlKrLnMA%3D&jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmVsZWFzZS1hc3NldHMuZ2l0aHVidXNlcmNvbnRlbnQuY29tIiwia2V5Ijoia2V5MSIsImV4cCI6MTc2MTY1MTQxMCwibmJmIjoxNzYxNjUxMTEwLCJwYXRoIjoicmVsZWFzZWFzc2V0cHJvZHVjdGlvbi5ibG9iLmNvcmUud2luZG93cy5uZXQifQ.Xa56ZPfens7XA4Ck1WBEKFhvqfOIEbzU7tCKIizqmfU&response-content-disposition=attachment%3B%20filename%3Dnode_exporter-1.6.1.linux-amd64.tar.gz&response-content-type=application%2Foctet-stream
+Resolving release-assets.githubusercontent.com (release-assets.githubusercontent.com)... 185.199.111.133, 185.199.108.133, 185.199.110.133, ...
+Connecting to release-assets.githubusercontent.com (release-assets.githubusercontent.com)|185.199.111.133|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 10368103 (9.9M) [application/octet-stream]
+Saving to: ‘node_exporter-1.6.1.linux-amd64.tar.gz’
+
+node_exporter-1.6.1.linux-amd64.t 100%[==========================================================>]   9.89M  --.-KB/s    in 0.02s
+
+2025-10-28 11:32:17 (460 MB/s) - ‘node_exporter-1.6.1.linux-amd64.tar.gz’ saved [10368103/10368103]
+
+root@monitor:~/prometheus-2.47.1.linux-amd64# tar -xvf node_exporter-1.6.1.linux-amd64.tar.gz
+sudo mv node_exporter-1.6.1.linux-amd64/node_exporter /usr/local/bin/
+rm -rf node_exporter*
+node_exporter-1.6.1.linux-amd64/
+node_exporter-1.6.1.linux-amd64/NOTICE
+node_exporter-1.6.1.linux-amd64/node_exporter
+node_exporter-1.6.1.linux-amd64/LICENSE
+root@monitor:~/prometheus-2.47.1.linux-amd64# vim /etc/systemd/system/node_exporter.service
+root@monitor:~/prometheus-2.47.1.linux-amd64# ^C
+root@monitor:~/prometheus-2.47.1.linux-amd64# chown node_exporter:node_exporter /usr/local/bin/node_exporter
+root@monitor:~/prometheus-2.47.1.linux-amd64# systemctl daemon-reload
+root@monitor:~/prometheus-2.47.1.linux-amd64# systemctl start node_exporter
+root@monitor:~/prometheus-2.47.1.linux-amd64# systemctl enable node_exporter
+Created symlink /etc/systemd/system/multi-user.target.wants/node_exporter.service → /etc/systemd/system/node_exporter.service.
+root@monitor:~/prometheus-2.47.1.linux-amd64# systemctl status node_exporter
+● node_exporter.service - Node Exporter
+     Loaded: loaded (/etc/systemd/system/node_exporter.service; enabled; preset: enabled)
+     Active: active (running) since Tue 2025-10-28 11:35:02 UTC; 20s ago
+   Main PID: 1555 (node_exporter)
+      Tasks: 4 (limit: 4526)
+     Memory: 2.6M (peak: 2.6M)
+        CPU: 5ms
+     CGroup: /system.slice/node_exporter.service
+             └─1555 /usr/local/bin/node_exporter
+
+Oct 28 11:35:02 monitor.example.com node_exporter[1555]: ts=2025-10-28T11:35:02.719Z caller=node_exporter.go:117 level=info collecto>
+Oct 28 11:35:02 monitor.example.com node_exporter[1555]: ts=2025-10-28T11:35:02.719Z caller=node_exporter.go:117 level=info collecto>
+Oct 28 11:35:02 monitor.example.com node_exporter[1555]: ts=2025-10-28T11:35:02.719Z caller=node_exporter.go:117 level=info collecto>
+Oct 28 11:35:02 monitor.example.com node_exporter[1555]: ts=2025-10-28T11:35:02.719Z caller=node_exporter.go:117 level=info collecto>
+Oct 28 11:35:02 monitor.example.com node_exporter[1555]: ts=2025-10-28T11:35:02.719Z caller=node_exporter.go:117 level=info collecto>
+Oct 28 11:35:02 monitor.example.com node_exporter[1555]: ts=2025-10-28T11:35:02.719Z caller=node_exporter.go:117 level=info collecto>
+Oct 28 11:35:02 monitor.example.com node_exporter[1555]: ts=2025-10-28T11:35:02.719Z caller=node_exporter.go:117 level=info collecto>
+Oct 28 11:35:02 monitor.example.com node_exporter[1555]: ts=2025-10-28T11:35:02.719Z caller=node_exporter.go:117 level=info collecto>
+Oct 28 11:35:02 monitor.example.com node_exporter[1555]: ts=2025-10-28T11:35:02.719Z caller=tls_config.go:274 level=info msg="Listen>
+Oct 28 11:35:02 monitor.example.com node_exporter[1555]: ts=2025-10-28T11:35:02.719Z caller=tls_config.go:277 level=info msg="TLS is>
+
+root@monitor:~/prometheus-2.47.1.linux-amd64# cd /etc/prometheus
+root@monitor:/etc/prometheus# ll
+total 20
+drwxr-xr-x   4 prometheus prometheus 4096 Oct 28 11:15 ./
+drwxr-xr-x 109 root       root       4096 Oct 28 11:31 ../
+drwxr-xr-x   2 prometheus prometheus 4096 Oct  4  2023 console_libraries/
+drwxr-xr-x   2 prometheus prometheus 4096 Oct  4  2023 consoles/
+-rw-r--r--   1 prometheus prometheus  934 Oct  4  2023 prometheus.yml
+root@monitor:/etc/prometheus# vim prometheus.yml
+ 29L, 934B written
+root@monitor:/etc/prometheus# promtool check config /etc/prometheus/prometheus.yml
+Checking /etc/prometheus/prometheus.yml
+ SUCCESS: /etc/prometheus/prometheus.yml is valid prometheus config file syntax
+
+root@monitor:/etc/prometheus# curl -X POST http://localhost:9090/-/reload
+root@monitor:/etc/prometheus# vim prometheus.yml
+
+root@monitor:/etc/prometheus# curl -X POST http://localhost:9090/-/reload
+failed to reload config: couldn't load configuration (--config.file="/etc/prometheus/prometheus.yml"): parsing YAML file /etc/prometheus/prometheus.yml: yaml: line 33: did not find expected key
+root@monitor:/etc/prometheus# vim prometheus.yml
+
+root@monitor:/etc/prometheus# curl -X POST http://localhost:9090/-/reload
+failed to reload config: couldn't load configuration (--config.file="/etc/prometheus/prometheus.yml"): parsing YAML file /etc/prometheus/prometheus.yml: yaml: line 33: did not find expected key
+root@monitor:/etc/prometheus# vim prometheus.yml
+root@monitor:/etc/prometheus# curl -X POST http://localhost:9090/-/reload
+failed to reload config: couldn't load configuration (--config.file="/etc/prometheus/prometheus.yml"): parsing YAML file /etc/prometheus/prometheus.yml: yaml: line 33: did not find expected key
+root@monitor:/etc/prometheus# vim prometheus.yml
+
+root@monitor:/etc/prometheus# curl -X POST http://localhost:9090/-/reload
+root@monitor:/etc/prometheus# apt-get update
+Hit:1 http://us-east-1.ec2.archive.ubuntu.com/ubuntu noble InRelease
+Get:2 http://us-east-1.ec2.archive.ubuntu.com/ubuntu noble-updates InRelease [126 kB]
+Get:3 http://us-east-1.ec2.archive.ubuntu.com/ubuntu noble-backports InRelease [126 kB]
+Get:4 http://security.ubuntu.com/ubuntu noble-security InRelease [126 kB]
+Get:5 http://us-east-1.ec2.archive.ubuntu.com/ubuntu noble/universe amd64 Packages [15.0 MB]
+Get:6 http://us-east-1.ec2.archive.ubuntu.com/ubuntu noble/universe Translation-en [5982 kB]
+Get:7 http://us-east-1.ec2.archive.ubuntu.com/ubuntu noble/universe amd64 Components [3871 kB]
+Get:8 http://security.ubuntu.com/ubuntu noble-security/main amd64 Packages [1270 kB]
+Get:9 http://us-east-1.ec2.archive.ubuntu.com/ubuntu noble/universe amd64 c-n-f Metadata [301 kB]
+Get:10 http://us-east-1.ec2.archive.ubuntu.com/ubuntu noble/multiverse amd64 Packages [269 kB]
+Get:11 http://us-east-1.ec2.archive.ubuntu.com/ubuntu noble/multiverse Translation-en [118 kB]
+Get:12 http://us-east-1.ec2.archive.ubuntu.com/ubuntu noble/multiverse amd64 Components [35.0 kB]
+Get:13 http://us-east-1.ec2.archive.ubuntu.com/ubuntu noble/multiverse amd64 c-n-f Metadata [8328 B]
+Get:14 http://us-east-1.ec2.archive.ubuntu.com/ubuntu noble-updates/main amd64 Packages [1545 kB]
+Get:15 http://us-east-1.ec2.archive.ubuntu.com/ubuntu noble-updates/main Translation-en [294 kB]
+Get:16 http://us-east-1.ec2.archive.ubuntu.com/ubuntu noble-updates/main amd64 Components [175 kB]
+Get:17 http://us-east-1.ec2.archive.ubuntu.com/ubuntu noble-updates/main amd64 c-n-f Metadata [15.4 kB]
+Get:18 http://us-east-1.ec2.archive.ubuntu.com/ubuntu noble-updates/universe amd64 Packages [1498 kB]
+Get:19 http://us-east-1.ec2.archive.ubuntu.com/ubuntu noble-updates/universe Translation-en [303 kB]
+Get:20 http://us-east-1.ec2.archive.ubuntu.com/ubuntu noble-updates/universe amd64 Components [378 kB]
+Get:21 http://us-east-1.ec2.archive.ubuntu.com/ubuntu noble-updates/universe amd64 c-n-f Metadata [31.3 kB]
+Get:22 http://us-east-1.ec2.archive.ubuntu.com/ubuntu noble-updates/restricted amd64 Packages [2175 kB]
+Get:23 http://us-east-1.ec2.archive.ubuntu.com/ubuntu noble-updates/restricted Translation-en [490 kB]
+Get:24 http://us-east-1.ec2.archive.ubuntu.com/ubuntu noble-updates/restricted amd64 Components [212 B]
+Get:25 http://us-east-1.ec2.archive.ubuntu.com/ubuntu noble-updates/restricted amd64 c-n-f Metadata [516 B]
+Get:26 http://us-east-1.ec2.archive.ubuntu.com/ubuntu noble-updates/multiverse amd64 Packages [30.3 kB]
+Get:27 http://us-east-1.ec2.archive.ubuntu.com/ubuntu noble-updates/multiverse Translation-en [5564 B]
+Get:28 http://us-east-1.ec2.archive.ubuntu.com/ubuntu noble-updates/multiverse amd64 Components [940 B]
+Get:29 http://us-east-1.ec2.archive.ubuntu.com/ubuntu noble-updates/multiverse amd64 c-n-f Metadata [484 B]
+Get:30 http://us-east-1.ec2.archive.ubuntu.com/ubuntu noble-backports/main amd64 Packages [40.4 kB]
+Get:31 http://us-east-1.ec2.archive.ubuntu.com/ubuntu noble-backports/main Translation-en [9208 B]
+Get:32 http://us-east-1.ec2.archive.ubuntu.com/ubuntu noble-backports/main amd64 Components [7172 B]
+Get:33 http://us-east-1.ec2.archive.ubuntu.com/ubuntu noble-backports/main amd64 c-n-f Metadata [368 B]
+Get:34 http://us-east-1.ec2.archive.ubuntu.com/ubuntu noble-backports/universe amd64 Packages [28.9 kB]
+Get:35 http://security.ubuntu.com/ubuntu noble-security/main Translation-en [211 kB]
+Get:36 http://security.ubuntu.com/ubuntu noble-security/main amd64 Components [21.5 kB]
+Get:37 http://us-east-1.ec2.archive.ubuntu.com/ubuntu noble-backports/universe Translation-en [17.5 kB]
+Get:38 http://us-east-1.ec2.archive.ubuntu.com/ubuntu noble-backports/universe amd64 Components [11.0 kB]
+Get:39 http://security.ubuntu.com/ubuntu noble-security/main amd64 c-n-f Metadata [8984 B]
+Get:40 http://security.ubuntu.com/ubuntu noble-security/universe amd64 Packages [905 kB]
+Get:41 http://us-east-1.ec2.archive.ubuntu.com/ubuntu noble-backports/universe amd64 c-n-f Metadata [1444 B]
+Get:42 http://us-east-1.ec2.archive.ubuntu.com/ubuntu noble-backports/restricted amd64 Components [216 B]
+Get:43 http://us-east-1.ec2.archive.ubuntu.com/ubuntu noble-backports/restricted amd64 c-n-f Metadata [116 B]
+Get:44 http://us-east-1.ec2.archive.ubuntu.com/ubuntu noble-backports/multiverse amd64 Components [212 B]
+Get:45 http://us-east-1.ec2.archive.ubuntu.com/ubuntu noble-backports/multiverse amd64 c-n-f Metadata [116 B]
+Get:46 http://security.ubuntu.com/ubuntu noble-security/universe Translation-en [203 kB]
+Get:47 http://security.ubuntu.com/ubuntu noble-security/universe amd64 Components [52.2 kB]
+Get:48 http://security.ubuntu.com/ubuntu noble-security/universe amd64 c-n-f Metadata [19.3 kB]
+Get:49 http://security.ubuntu.com/ubuntu noble-security/restricted amd64 Packages [2080 kB]
+Get:50 http://security.ubuntu.com/ubuntu noble-security/restricted Translation-en [470 kB]
+Get:51 http://security.ubuntu.com/ubuntu noble-security/restricted amd64 Components [212 B]
+Get:52 http://security.ubuntu.com/ubuntu noble-security/restricted amd64 c-n-f Metadata [500 B]
+Get:53 http://security.ubuntu.com/ubuntu noble-security/multiverse amd64 Packages [27.4 kB]
+Get:54 http://security.ubuntu.com/ubuntu noble-security/multiverse Translation-en [5708 B]
+Get:55 http://security.ubuntu.com/ubuntu noble-security/multiverse amd64 Components [212 B]
+Get:56 http://security.ubuntu.com/ubuntu noble-security/multiverse amd64 c-n-f Metadata [384 B]
+Fetched 38.3 MB in 4s (9786 kB/s)
+Reading package lists... Done
+root@monitor:/etc/prometheus# apt-get install -y apt-transport-https software-properties-common
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+software-properties-common is already the newest version (0.99.49.3).
+software-properties-common set to manually installed.
+The following NEW packages will be installed:
+  apt-transport-https
+0 upgraded, 1 newly installed, 0 to remove and 55 not upgraded.
+Need to get 3970 B of archives.
+After this operation, 36.9 kB of additional disk space will be used.
+Get:1 http://us-east-1.ec2.archive.ubuntu.com/ubuntu noble-updates/universe amd64 apt-transport-https all 2.8.3 [3970 B]
+Fetched 3970 B in 0s (0 B/s)
+Selecting previously unselected package apt-transport-https.
+(Reading database ... 71718 files and directories currently installed.)
+Preparing to unpack .../apt-transport-https_2.8.3_all.deb ...
+Unpacking apt-transport-https (2.8.3) ...
+Setting up apt-transport-https (2.8.3) ...
+Scanning processes...
+Scanning linux images...
+
+Running kernel seems to be up-to-date.
+
+No services need to be restarted.
+
+No containers need to be restarted.
+
+No user sessions are running outdated binaries.
+
+No VM guests are running outdated hypervisor (qemu) binaries on this host.
+root@monitor:/etc/prometheus# wget -q -O - https://packages.grafana.com/gpg.key | sudo apt-key add -
+Warning: apt-key is deprecated. Manage keyring files in trusted.gpg.d instead (see apt-key(8)).
+OK
+root@monitor:/etc/prometheus# echo “deb https://packages.grafana.com/oss/deb stable main” | sudo tee — a /etc/apt/sources.list.d/grafana.list
+“deb https://packages.grafana.com/oss/deb stable main”
+root@monitor:/etc/prometheus# apt-get update
+E: Type '“deb' is not known on line 1 in source list /etc/apt/sources.list.d/grafana.list
+E: The list of sources could not be read.
+root@monitor:/etc/prometheus# echo "deb https://packages.grafana.com/oss/deb stable main" | sudo tee -a /etc/apt/sources.list.d/grafa
+na.list
+deb https://packages.grafana.com/oss/deb stable main
+root@monitor:/etc/prometheus# apt-get update
+E: Type '“deb' is not known on line 1 in source list /etc/apt/sources.list.d/grafana.list
+E: The list of sources could not be read.
+root@monitor:/etc/prometheus# echo "deb https://packages.grafana.com/oss/deb stable main" | sudo tee /etc/apt/sources.list.d/grafana.list
+wget -q -O - https://packages.grafana.com/gpg.key | sudo apt-key add -
+deb https://packages.grafana.com/oss/deb stable main
+Warning: apt-key is deprecated. Manage keyring files in trusted.gpg.d instead (see apt-key(8)).
+OK
+root@monitor:/etc/prometheus# apt-get update
+Hit:1 http://us-east-1.ec2.archive.ubuntu.com/ubuntu noble InRelease
+Hit:2 http://us-east-1.ec2.archive.ubuntu.com/ubuntu noble-updates InRelease
+Hit:3 http://us-east-1.ec2.archive.ubuntu.com/ubuntu noble-backports InRelease
+Get:4 https://packages.grafana.com/oss/deb stable InRelease [7661 B]
+Get:5 http://security.ubuntu.com/ubuntu noble-security InRelease [126 kB]
+Get:6 https://packages.grafana.com/oss/deb stable/main amd64 Packages [439 kB]
+Get:7 http://security.ubuntu.com/ubuntu noble-security/main amd64 Components [21.5 kB]
+Get:8 http://security.ubuntu.com/ubuntu noble-security/main amd64 c-n-f Metadata [9008 B]
+Get:9 http://security.ubuntu.com/ubuntu noble-security/universe amd64 Components [52.2 kB]
+Get:10 http://security.ubuntu.com/ubuntu noble-security/universe amd64 c-n-f Metadata [19.4 kB]
+Get:11 http://security.ubuntu.com/ubuntu noble-security/restricted amd64 Components [208 B]
+Get:12 http://security.ubuntu.com/ubuntu noble-security/multiverse amd64 Components [208 B]
+Fetched 675 kB in 1s (973 kB/s)
+Reading package lists... Done
+W: https://packages.grafana.com/oss/deb/dists/stable/InRelease: Key is stored in legacy trusted.gpg keyring (/etc/apt/trusted.gpg), see the DEPRECATION section in apt-key(8) for details.
+root@monitor:/etc/prometheus# apt-get -y install grafana
+Reading package lists... Done
+Building dependency tree... Done
+Reading state information... Done
+The following additional packages will be installed:
+  musl
+The following NEW packages will be installed:
+  grafana musl
+0 upgraded, 2 newly installed, 0 to remove and 55 not upgraded.
+Need to get 188 MB of archives.
+After this operation, 694 MB of additional disk space will be used.
+Get:1 http://us-east-1.ec2.archive.ubuntu.com/ubuntu noble/universe amd64 musl amd64 1.2.4-2 [416 kB]
+Get:2 https://packages.grafana.com/oss/deb stable/main amd64 grafana amd64 12.2.1 [187 MB]
+Fetched 188 MB in 2s (114 MB/s)
+Selecting previously unselected package musl:amd64.
+(Reading database ... 71722 files and directories currently installed.)
+Preparing to unpack .../musl_1.2.4-2_amd64.deb ...
+Unpacking musl:amd64 (1.2.4-2) ...
+Selecting previously unselected package grafana.
+Preparing to unpack .../grafana_12.2.1_amd64.deb ...
+Unpacking grafana (12.2.1) ...
+Setting up musl:amd64 (1.2.4-2) ...
+Setting up grafana (12.2.1) ...
+info: Selecting UID from range 100 to 999 ...
+
+info: Adding system user `grafana' (UID 111) ...
+info: Adding new user `grafana' (UID 111) with group `grafana' ...
+info: Not creating home directory `/usr/share/grafana'.
+### NOT starting on installation, please execute the following statements to configure grafana to start automatically using systemd
+ sudo /bin/systemctl daemon-reload
+ sudo /bin/systemctl enable grafana-server
+### You can start grafana-server by executing
+ sudo /bin/systemctl start grafana-server
+Processing triggers for man-db (2.12.0-4build2) ...
+Scanning processes...
+Scanning linux images...
+
+Running kernel seems to be up-to-date.
+
+No services need to be restarted.
+
+No containers need to be restarted.
+
+No user sessions are running outdated binaries.
+
+No VM guests are running outdated hypervisor (qemu) binaries on this host.
+root@monitor:/etc/prometheus# systemctl enable grafana-server
+Synchronizing state of grafana-server.service with SysV service script with /usr/lib/systemd/systemd-sysv-install.
+Executing: /usr/lib/systemd/systemd-sysv-install enable grafana-server
+Created symlink /etc/systemd/system/multi-user.target.wants/grafana-server.service → /usr/lib/systemd/system/grafana-server.service.
+root@monitor:/etc/prometheus# systemctl start grafana-server
+root@monitor:/etc/prometheus# systemctl status grafana-server
+● grafana-server.service - Grafana instance
+     Loaded: loaded (/usr/lib/systemd/system/grafana-server.service; enabled; preset: enabled)
+     Active: active (running) since Tue 2025-10-28 12:07:29 UTC; 10s ago
+       Docs: http://docs.grafana.org
+   Main PID: 3038 (grafana)
+      Tasks: 17 (limit: 4526)
+     Memory: 155.0M (peak: 155.3M)
+        CPU: 2.656s
+     CGroup: /system.slice/grafana-server.service
+             └─3038 /usr/share/grafana/bin/grafana server --config=/etc/grafana/grafana.ini --pidfile=/run/grafana/grafana-server.pi>
+
+Oct 28 12:07:36 monitor.example.com grafana[3038]: logger=plugin.backgroundinstaller t=2025-10-28T12:07:36.476400301Z level=info msg>
+Oct 28 12:07:36 monitor.example.com grafana[3038]: logger=plugin.installer t=2025-10-28T12:07:36.616508841Z level=info msg="Installi>
+Oct 28 12:07:36 monitor.example.com grafana[3038]: logger=installer.fs t=2025-10-28T12:07:36.654316242Z level=info msg="Downloaded a>
+Oct 28 12:07:36 monitor.example.com grafana[3038]: logger=plugins.registration t=2025-10-28T12:07:36.666013347Z level=info msg="Plug>
+Oct 28 12:07:36 monitor.example.com grafana[3038]: logger=plugin.backgroundinstaller t=2025-10-28T12:07:36.666056457Z level=info msg>
+Oct 28 12:07:36 monitor.example.com grafana[3038]: logger=plugin.backgroundinstaller t=2025-10-28T12:07:36.666077139Z level=info msg>
+Oct 28 12:07:36 monitor.example.com grafana[3038]: logger=plugin.installer t=2025-10-28T12:07:36.809010698Z level=info msg="Installi>
+Oct 28 12:07:36 monitor.example.com grafana[3038]: logger=installer.fs t=2025-10-28T12:07:36.856664893Z level=info msg="Downloaded a>
+Oct 28 12:07:36 monitor.example.com grafana[3038]: logger=plugins.registration t=2025-10-28T12:07:36.869548235Z level=info msg="Plug>
+Oct 28 12:07:36 monitor.example.com grafana[3038]: logger=plugin.backgroundinstaller t=2025-10-28T12:07:36.869589105Z level=info msg>
+lines 1-21/21 (END)client_loop: send disconnect: Connection reset
+PS C:\Users\10844395\downloads> ssh -i "new-key.pem" ubuntu@ec2-34-207-60-48.compute-1.amazonaws.com
+Welcome to Ubuntu 24.04.3 LTS (GNU/Linux 6.14.0-1011-aws x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/pro
+
+ System information as of Tue Oct 28 13:20:50 UTC 2025
+
+  System load:  0.0                Temperature:              -273.1 C
+  Usage of /:   17.6% of 18.33GB   Processes:                162
+  Memory usage: 13%                Users logged in:          1
+  Swap usage:   0%                 IPv4 address for enp39s0: 172.31.17.115
+
+
+Expanded Security Maintenance for Applications is not enabled.
+
+61 updates can be applied immediately.
+38 of these updates are standard security updates.
+To see these additional updates run: apt list --upgradable
+
+Enable ESM Apps to receive additional future security updates.
+See https://ubuntu.com/esm or run: sudo pro status
+
+
+Last login: Tue Oct 28 11:13:29 2025 from 103.244.155.144
+ubuntu@monitor:~$ client_loop: send disconnect: Connection reset
+PS C:\Users\10844395\downloads>  ssh -i "new-key.pem" ubuntu@ec2-34-207-60-48.compute-1.amazonaws.com
+Welcome to Ubuntu 24.04.3 LTS (GNU/Linux 6.14.0-1011-aws x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/pro
+
+ System information as of Tue Oct 28 13:26:24 UTC 2025
+
+  System load:  0.0                Temperature:              -273.1 C
+  Usage of /:   17.6% of 18.33GB   Processes:                160
+  Memory usage: 13%                Users logged in:          1
+  Swap usage:   0%                 IPv4 address for enp39s0: 172.31.17.115
+
+
+Expanded Security Maintenance for Applications is not enabled.
+
+61 updates can be applied immediately.
+38 of these updates are standard security updates.
+To see these additional updates run: apt list --upgradable
+
+Enable ESM Apps to receive additional future security updates.
+See https://ubuntu.com/esm or run: sudo pro status
+
+
+Last login: Tue Oct 28 13:20:54 2025 from 152.58.29.200
+ubuntu@monitor:~$ history
+    1  history
+ubuntu@monitor:~$ sudo su -
+root@monitor:~# history
+    1  history
+root@monitor:~#
+
+
+______________________________________________________________________________________________________________
+
+
+swiggy termial cmmands ::
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+
+ 1  sudo su -
+    2  mkdir actions-runner && cd actions-runner
+    3  curl -o actions-runner-linux-x64-2.329.0.tar.gz -L https://github.com/actions/runner/releases/download/v2.329.0/actions-runner-linux-x64-2.329.0.tar.gz
+    4  echo "194f1e1e4bd02f80b7e9633fc546084d8d4e19f3928a324d512ea53430102e1d  actions-runner-linux-x64-2.329.0.tar.gz" | shasum -a 256 -c
+    5  tar xzf ./actions-runner-linux-x64-2.329.0.tar.gz
+    6  ./config.sh --url https://github.com/Ankit-10844395/new --token BX5V7DL43DQ22CDAEHHEOITJABXYQ
+    7  ./run.sh
+    8  sudo su -
+    9  ll
+   10  cd actions-runner/
+   11  ll
+   12  ./config.sh --url https://github.com/Ankit-10844395/new --token BX5V7DLXO34HMXNKTZLRZMLJACB5U
+   13  ./congif.sh remove
+   14  ./config.sh remove
+   15  /config.sh --url https://github.com/Ankit-10844395/new --token BX5V7DLXO34HMXNKTZLRZMLJACB5U
+   16  echo "194f1e1e4bd02f80b7e9633fc546084d8d4e19f3928a324d512ea53430102e1d  actions-runner-linux-x64-2.329.0.tar.gz" | shasum -a 256 -c
+   17  tar xzf ./actions-runner-linux-x64-2.329.0.tar.gz
+   18  ./config.sh --url https://github.com/Ankit-10844395/new --token BX5V7DLXO34HMXNKTZLRZMLJACB5U
+   19  ./run.sh
+   20  sudo su -
+   21  ll
+   22  cd actions-runner/
+   23  ./run.sh
+   24  kubectl get all
+   25  aws configure
+   26  kubectl get all
+   27  ll
+   28  cd actions-runner/
+   29  ./run.sh
+   30  history
+
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+terraform terminal commands::
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+ 1  snap install terraform --classic
+    2  yum install terraform --classic
+    3  yum install terraform
+    4  sudo apt-get update && sudo apt-get install -y gnupg software-properties-common curl
+    5  sudo yum update && sudo yum install -y gnupg software-properties-common curl
+    6  curl -O https://releases.hashicorp.com/terraform/1.6.6/terraform_1.6.6_linux_amd64.zip
+    7  unzip terraform_1.6.6_linux_amd64.zip
+    8  sudo mv terraform /usr/local/bin/
+    9  terraform -version
+   10  curl -O https://releases.hashicorp.com/terraform/1.13.4/terraform_1.13.4_linux_amd64.zip
+   11  unzip terraform_1.13.4_linux_amd64.zip
+   12  sudo mv terraform /usr/local/bin/
+   13  terraform -version
+   14  which terraform
+   15  aws configure
+   16  ll
+   17  cd terraform_1.13.4_linux_amd64.zip
+   18  ll
+   19  ls
+   20  cd terraform_1.13.4_linux_amd64.zip
+   21  cd /usr/local/bin/
+   22  ll
+   23  cd terraform
+   24  ll
+   25  cd
+   26  ll
+   27  rm -rf terraform_1.6.6_linux_amd64.zip
+   28  ll
+   29  cd terraform_1.13.4_linux_amd64.zip
+   30  cd /usr/local/bin
+   31  unzip terraform_1.13.4_linux_amd64.zip
+   32  cd
+   33  unzip terraform_1.13.4_linux_amd64.zip
+   34  lkl
+   35  ll
+   36  cd terraform
+   37  cd terraform_1.13.4_linux_amd64.zip
+   38  mkdir swiggy
+   39  cd swiggy
+   40  git clone https://github.com/Aakibgithuber/deployment-using-github-actions.git
+   41  yum install git -y
+   42  git clone https://github.com/Aakibgithuber/deployment-using-github-actions.git
+   43  ll
+   44  cd deployment-using-github-actions
+   45  ll
+   46  cd Instance-terraform
+   47  ll
+   48  vim main.tf
+   49  vim provider.tf
+   50  terraform init
+   51  terraform validate
+   52  terraform plan
+   53  terraform apply --auto-approve
+   54  vim provider.tf
+   55  vim main.tf
+   56  terraform init
+   57  terraform validate
+   58  terraform plan
+   59  terraform apply --auto-approve
+   60  terraform plan
+   61  terraform apply --auto-approve
+   62  vim main.tf
+   63  cat vim.tf
+   64  cat main.tf
+   65  vim main.tf
+   66  terraform init
+   67  vim main.tf
+   68  ll
+   69  vim provider.tf
+   70  terraform init
+   71  terraform validate
+   72  terraform plan
+   73  terraform apply
+   74  vim main.tf
+   75  terraform plan
+   76  terraform apply
+   77  mkdir actions-runner && cd actions-runner
+   78  curl -o actions-runner-linux-x64-2.313.0.tar.gz -L https://github.com/actions/runner/releases/download/v2.313.0/actions-runner-linux-x64-2.313.0.tar.gz
+   79  echo "56910d6628b41f99d9a1c5fe9df54981ad5d8c9e42fc14899dcc177e222e71c4  actions-runner-linux-x64-2.313.0.tar.gz" | shasum -a 256 -c
+   80  tar xzf ./actions-runner-linux-x64-2.313.0.tar.gz
+   81  ./config.sh --url https://github.com/Aakibgithuber/Swiggy-app-deployment-using-github-actions- --token AYEA4XIU5ILR2XRXF6F2DFLF2GYZW# Last step, run it!
+   82  ./run.sh
+   83  ./config.sh --url https://github.com/Aakibgithuber/Swiggy-app-deployment-using-github-actions- --token AYEA4XIU5ILR2XRXF6F2DFLF2GYZW# Last step, run it!
+   84  exit
+   85  hostnamectl set-hostname terra-instance.example.com
+   86  bash
+   87  exit
+   88  ll
+   89  cd swiggy
+   90  ll
+   91  cd deployment-using-github-actions
+   92  ll
+   93  cd ..
+   94  git add .
+   95  git remote -v
+   96  git init
+   97  git remote -v
+   98  git clone https://github.com/Aakibgithuber/deployment-using-github-actions.git
+   99  ll
+  100  rm -rf deployment-using-github-actions
+  101  git clone https://github.com/Aakibgithuber/deployment-using-github-actions.git
+  102  git remote -v
+  103  git remote remove origin
+  104  git remote add origin https://github.com/Ankit-10844395/new.git
+  105  git remote -v
+  106  git push origin main
+  107  git push origin master
+  108  git Branch -M main
+  109  git branch -M main
+  110  git remote remove origin
+  111  git remote add origin https://github.com/Ankit-10844395/new.git
+  112  git remote -v
+  113  git push origin main
+  114  git push origin main --force
+  115  exit
+  116  ssh-keygen
+  117  cd .ssh
+  118  cat id_rsa.pub
+  119  cd
+  120  cd swiggy
+  121  git init
+  122  git remote remove origin
+  123  git branch -M main
+  124  git remote add origin git@github.com:Ankit-10844395/new.git
+  125  git remote -v
+  126  git push origin main
+  127  git branch
+  128  git remote remove origin main
+  129  git remote remove main
+  130  git remote remove origin
+  131  git add .
+  132  git commit -m "first-commit"
+  133  git remote add origin main
+  134  git remote add origin git@github.com:Ankit-10844395/new.git
+  135  git remote remove origin main
+  136  git remote remove origin
+  137  git remote add origin git@github.com:Ankit-10844395/new.git
+  138  git remote -v
+  139  git push origin main
+  140  git remote remove origin
+  141  ll
+  142  cd deployment-using-github-actions/
+  143  ll
+  144  cd Instance-terraform/
+  145  ll
+  146  vim main.tf
+  147  terraform destroy
+  148  terraform init
+  149  terraform destroy
+  150  ll
+  151  vim main.tf
+  152  terraform init
+  153  terraform validate
+  154  terraform plan
+  155  terraform apply
+  156  vim main.tf
+  157  terraform plan
+  158  terraform apply
+  159  vim main.tf
+  160  vim provider.sh
+  161  vim provider.tf
+  162  terraform plan
+  163  terraform apply
+  164  vim main.tf
+  165  terraform apply
+  166  ll
+  167  vim script.sh
+  168  cd
+  169  ll
+  170  cd swiggy/
+  171  ll
+  172  cd deployment-using-github-actions/
+  173  ll
+  174  ls -a
+  175  git branch
+  176  git checkout main
+  177  git log
+  178  git checkout main
+  179  git checkout origin
+  180  git swith -c main
+  181  git switch -c main
+  182  git branch
+  183  git add .
+  184  git commit -m "first"
+  185  git push origin main
+  186  git remote add origin git@github.com:Ankit-10844395/new.git
+  187  git remote remove origin
+  188  git remote -v
+  189  git remote add origin git@github.com:Ankit-10844395/new.git
+  190  git push origin main
+  191  git remote -v
+  192  git pull
+  193  git pull remote main
+  194  git pull https://github.com/Ankit-10844395/new.git main
+  195  git add .
+  196  git commit -m "second"
+  197  git push origin main
+  198  git switch -c master
+  199  git switch master
+  200  git branch
+  201  git add .
+  202  git commit -m "new-commit"
+  203  git remote -v
+  204  git push origin master
+  205  git remote add origin git@github.com:Ankit-10844395/new.git
+  206  git remote remove origin
+  207  git remote add origin git@github.com:Ankit-10844395/new.git
+  208  git remote -v
+  209  git push origin master
+  210  git fetch origin
+  211  git merge origin/master
+  212  git pull origin master --allow-unrelated-histories
+  213  git pull origin master --allow-unrelated-histories --no-rebase
+  214  git push origin master
+  215  git pull origin master --allow-unrelated-histories --no-rebase
+  216  git status
+  217  git rm Dockerfile
+  218  git add .
+  219  git commit -m "my-commit"
+  220  git remote -v
+  221  git push origin master
+  222  git push origin master --force
+  223  ``
+  224  ll
+  225  cd swiggy
+  226  ll
+  227  cd deployment-using-github-actions/
+  228  ll
+  229  cd eks-terraform
+  230  cd Eks-terraform
+  231  ll
+  232  vim main.tf
+  233  cat main.tf
+  234  vim main.tf
+  235  ll
+  236  vim backend.tf
+  237  vim provider.tf
+  238  terraform init
+  239  terraform apply
+  240  history
+
+
+)))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))))
+
+
+sudo useradd --system --no-create-home --shell /bin/false Prometheus
+ wget https://github.com/prometheus/prometheus/releases/download/v2.47.1/prometheus-2.47.1.linux-amd64.tar.gz
+
+
+tar -xvf prometheus-2.47.1.linux-amd64.tar.gz
+cd prometheus-2.47.1.linux-amd64/
+sudo mkdir -p /data /etc/prometheus
+sudo mv prometheus promtool /usr/local/bin/
+sudo mv consoles/ console_libraries/ /etc/prometheus/
+sudo mv prometheus.yml /etc/prometheus/prometheus.yml
+
+
+
+sudo chown -R prometheus:prometheus /etc/prometheus/ /data/
+vim /etc/systemd/system/prometheus.service
+systemctl enable Prometheus
+systemctl start Prometheus
+ systemctl status Prometheus
+
+
+sudo useradd --system --no-create-home --shell /bin/false node_exporter
+get https://github.com/prometheus/node_exporter/releases/download/v1.6.1/node_exporter-1.6.1.linux-amd64.tar.gz
+
+
+tar -xvf node_exporter-1.6.1.linux-amd64.tar.gz
+sudo mv node_exporter-1.6.1.linux-amd64/node_exporter /usr/local/bin/
+rm -rf node_exporter*
+
+vim /etc/systemd/system/node_exporter.service
+ chown node_exporter:node_exporter /usr/local/bin/node_exporter
+ systemctl daemon-reload
+systemctl enable node_exporter
+systemctl status node_exporter
+cd /etc/Prometheus
+ll
+ vim prometheus.yml
+
+
+
+
+
+/etc/prometheus# promtool check config /etc/prometheus/prometheus.yml
+
+ curl -X POST http://localhost:9090/-/reload
+apt-get update
+apt-get install -y apt-transport-https software-properties-common
+ wget -q -O - https://packages.grafana.com/gpg.key | sudo apt-key add -
+
+ echo "deb https://packages.grafana.com/oss/deb stable main" | sudo tee /etc/apt/sources.list.d/grafana.list
+wget -q -O - https://packages.grafana.com/gpg.key | sudo apt-key add -
+
+
+apt-get update
+apt-get -y install Grafana
+systemctl enable grafana-server
+systemctl start grafana-server
+systemctl status grafana-server
+
+
