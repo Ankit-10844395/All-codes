@@ -1,0 +1,188 @@
+
+
+##########_________Replication_________###########
+
+->Make an instance :- 10G gp2
+
+->Delete on termination in EBS volume should be yes while practicing while No during production
+
+->elastic block store 
+-> volume-> size 5 us east1 a 
+->change name:- data-vol
+->connect->attach volume
+->instance __________
+
+->ssh in terminal and connect the instance 
+
+-> mkdir /data
+->lsblk
+->mkfs.ext4 /dev/nvme1
+->mount /dev/nvme1n1 /data/
+->cd /data/
+->touch pooja.txt{1..100}
+
+-> Launch another instance in same different zone but with same key pair(us east 1 b)
+->go to separate terminal
+->cd downloads 
+->paste ssh and login
+->goto snapshot in aws  *snapshot is build in disk
+->create snapshot 
+->select volume
+->launch/create
+->convert snapshot into disk
+->zone us east 1b
+->goto volume
+-> 1 new volume would have generated
+->click action
+->attach volume
+->
+
+In terminal (Assigning file system is not required as its already present in snapshot)
+
+->lsblk ->see if a disk has been created or not
+->mkdir /Sanjaya
+->mount /dev/nvme1n1 /Sanjaya/
+->cd /abc/
+->ll
+
+
+
+
+
+Trying to access same snapshot data from different regions
+------------------------------------------------------------------
+
+-> /umount
+->volume :- detattach volume then delete volume
+->terminate the instance
+-> take a duplicate session 
+-> change region to ohio
+->snapshot
+-> region :- us east 1 -> us east 2 transfer the snapshot
+->convert snapshot ->create volume
+->launch instance->create security group ->default values ->launch instance
+->volume ->select vol->attach volume in actions
+
+In terminal 
+
+->lsblk
+->mkdir /prod-data
+->mount /dev/nvme1n1 /prod-data/
+->cd /data/
+->ll
+
+
+
+Creating multiple snapshot volume data
+
+-> create volume ->size 4g  ->us east 
+->create
+->attach volume with instance'
+->
+
+
+In terminal
+
+lsblk
+mkfs.ext3 /dev/nvme1n1
+mkdir /data-one
+mount /dev/nvme1n1 /data-one/
+cd /data-one/
+touch devops.txt{1..10}
+
+
+
+console
+
+snapshot ->create snapshot->size 4G
+
+
+
+Type of instances
+1> on demand instance :- more costly
+2> reserved instance :-less costly for Linux
+
+
+--------------------------------->Reserved instance 
+
+spot requests are not used for production - bidding - without intimation, aws terminates it 
+changing sec group -> create new one ->outbound rule -> ssh -22 -> http -80 -> create
+
+
+revise
+create instance
+volume will be attached initially
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+how to mount using s3 fuse system to same platform ?
+
+
+make an instance /
+cat /etc/os-releas->
+iam user ->create user -> s3 full access ->attach existing policy->policies->s3fullacess 
+i confirm
+create access key 
+download.csv file
+awscli --version
+where is awcli
+aws configure
+paste aws acess key id
+paste the secret key
+ls -a
+cd .aws/
+ll
+cat config
+cat credentials
+cd
+
+
+
+
+access key -username | secret key -passswd
+
+
+
+
+
+
+

@@ -1,0 +1,56 @@
+VPC :- Virtual private cloud
+
+g
+
+
+
+
+
+
+
+How to host static website ------------------------------
+
+---
+
+
+
+how to do versioning -------------------------------------------------------------------
+
+create new bucket
+enable bucket versioning
+goto bucket
+upload files in object
+enable acl
+bucket->webhost->permission
+read read persmission in files
+sav
+copy url and paste in browser
+
+CRR cross region replication----------------------------------------------------passing bucket
+virgining should be enable in both buckets in both regions
+->we can create 100 buckets in free tier account in aws->bucket data 64 petabyte
+->in every region we can have only 5 elastic ip ->free tier account
+
+->create bucket
+
+asynchronous and one way process
+buckets->webhots(name of bucket)->replication rules->create replication rule
+->APPLY TO ALL OBJECT
+->choose devops ohio  buckety in same account
+->by default there is no encryption in aws but in azure ther is encryption by default
+->by efault storage class is standard so change to inteligie tier in ohio and standard in n.virginia
+->lifecycle configuration
+-> create lifecycle rule
+->
+
+
+
+Elastic load balancer :- to balance the load-------------------
+
+
+
+
+Auto scaling ---------------------------------------
+
+
+

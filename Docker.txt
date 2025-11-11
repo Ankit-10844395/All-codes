@@ -1,0 +1,98 @@
+Docker Install and run command :-
+
+docker --help
+
+inside root
+    1  docker ps
+    2  rpmquery docker
+    3  yum install docker -y
+    4  docker ps
+    5  systemctl start docker
+    6  systemctl enable docker
+    9  docker pull httpd
+   10  docker pull nginx
+   11  docker run -it --name web-app ubuntu:latest
+inside container/images
+-- cd /var/ww/html/ -> edit index.html file
+   12  docker start web-app
+   13  docker attach web-app
+   14  service apache2 start
+inside root-----
+   16  docker inspect web-app |less
+   21  curl http://172.17.0.2
+   22  docker ps -a
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 1  rpmquery docker
+    2  yum install docker -y
+    3  systemctl start docker
+    4  systemctl enable docker
+    5  docker pull nginx
+    6  docker run -it --name devops -p 8080:80 nginix /bin/bash
+    7  docker run -it --name devops -p 8080:80 nginx /bin/bash
+    8  docker start devops
+    9  docker attach devops
+   10  docker inspect devops |less
+   11  curl http://172.17.0.2
+   12  docker images
+   13  docker ps -a
+   14  docker commit 1bf2dac491a2 world_image
+   15  docker images
+   16  docker save -o new-file.tar world_image:latest
+   17  gzip new-file.tar
+   18  ssh-keygen
+   19  cd .ssh
+   20  cat id_rsa.pub
+   21  vim authorized_keys
+   22  scp new-file.tar.gz root@172.31.1.43:/tmp
+   23  cd
+   24  scp new-file.tar.gz root@172.31.1.43:/tmp
+   25  docker images
+
+
+
+
+
+
+1  yum install docker -y
+    2  systemctl start docker
+    3  systemctl enable docker
+    4  docker pull nginx
+    5  docker run -it --name machine -p 8080:80 nginx /bin/bash
+    6  docker start machine
+    7  docker attach machine
+    8  docker inspect machine |less
+    9  docker ps
+   10  docker images
+   11  cd /var/www/html/
+   12  ll
+   13  ls
+   14  cd .ssh
+   15  vim authorized_keys
+   16  cd
+   17  ssh-keygen
+   18  cd .ssh
+   19  cat id_rsa.pub
+   20  cd
+   21  cd /tmp
+   22  ll
+   23  docker import new-file.tar.gz
+   24  docker images
