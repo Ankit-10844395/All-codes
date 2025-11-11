@@ -1,0 +1,310 @@
+    1  yum update –y
+    2  wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
+    3  rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+    4  yum upgrade
+    5  yum install java-21-amazon-corretto -y
+    6  yum install jenkins -y
+    7   systemctl enable jenkins
+    8  systemctl start jenkins
+   
+
+
+
+pipeline {
+    agent any
+    
+    tools {
+        maven 'maven'
+    }
+ 
+    environment {
+        TOMCAT_USER = 'deployer'
+        TOMCAT_PASS = 'deployer'
+        TOMCAT_HOST = '54.165.111.63'
+        TOMCAT_PORT = '8080'
+    }
+ 
+    stages {
+        stage('Clone Repository') {
+            steps {
+                git branch: 'main', url: 'https://github.com/Ankit-10844395/brand-repo.git'
+            }
+        }
+ 
+        stage('Build with Maven') {
+            steps {
+                sh 'mvn clean package -Dmaven.test.failure.ignore=true'
+            }
+        }
+ 
+        stage('Deploy to Tomcat') {
+            steps {
+                sh '''
+                    curl -u $TOMCAT_USER:$TOMCAT_PASS \
+                    --upload-file webapp/target/webapp.war \
+                    "http://$TOMCAT_HOST:$TOMCAT_PORT/manager/text/deploy?path=/sampleapp&update=true"
+                '''
+            }
+        }
+ 
+        stage('Deploy to Docker Host') {
+            steps {
+                sshPublisher(publishers: [
+                    sshPublisherDesc(
+                        configName: 'docker', // Must match SSH config name in Jenkins
+                        transfers: [
+                            sshTransfer(
+                                sourceFiles: '**/*',
+                                removePrefix: '',
+                                remoteDirectory: '/root/deploy',
+                                execCommand: '''
+                                    cd /root/deploy
+                                    aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 867098306986.dkr.ecr.us-east-1.amazonaws.com
+                                    docker build -t tomcat-webapp .
+                                    docker tag tomcat-webapp:latest 867098306986.dkr.ecr.us-east-1.amazonaws.com/tomcat-webapp:latest
+                                    docker push 867098306986.dkr.ecr.us-east-1.amazonaws.com/tomcat-webapp:latest
+                                '''
+                            )
+                        ]
+                    )
+                ])
+            }
+        }
+    }
+ 
+    post {
+        success {
+            junit '**/target/surefire-reports/TEST-*.xml'
+            archiveArtifacts artifacts: '**/target/*.war', fingerprint: true
+        }
+    }
+}
+
+
+
+
+jenkins_commands
+
+    1  yum update –y
+    2  wget -O /etc/yum.repos.d/jenkins.repo     https://pkg.jenkins.io/redhat-stable/jenkins.repo
+    3  rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
+    4  yum upgrade
+    5  yum install java-21-amazon-corretto -y
+    6  yum install jenkins -y
+    7   systemctl enable jenkins
+    8  systemctl start jenkins
+    9  history
+   10  cat /var/lib/jenkins/secrets/initialAdminPassword
+   11  hostname
+   12  cd /var/lib/jenkins
+   13  ll
+   14  vim jenkins.model.JenkinsLocationConfiguration.xml
+   15  systemctl jenkins-restart
+   16  systemctl restart jenkins
+   17  ssh-keygen
+   18  cd .ssh
+   19  cd .ssh/
+   20  cd /root/.ssh
+   21  cat id_rsa.pub
+   22  cd
+   23  yum install maven -y
+   24  yum install git -y
+   25  mvn -v
+   26  cd .ssh
+   27  vim authorized_keys
+   28  cd
+   29  vim /etc/ssh/sshd_config
+   30  systemctl restart sshd
+   31  ip a s
+   32  vim /etc/hosts
+   33  ping docker.example.com
+   34  cd /var/lib/jenkins/workspace/
+   35  ll
+   36  pwd
+   37  cd pipeline-project
+   38  pwd
+   39  cd
+   40  passwd root
+   41  systemctl restart jenkins
+   42  systemctl enable jenkins
+   43  cd /var/lib/jenkins
+   44  ll
+   45  cd workspace
+   46  ll
+   47  cd pipeline-project
+   48  ll
+   49  pwd
+   50  cd
+   51  systemctl restart jenkins
+   52  systemctl enable jenkins
+   53  cd deploy
+
+
+
+tomcat
+
+  yum install java* -y
+    2  yum install wget -y
+    3  wget https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.111/bin/apache-tomcat-9.0.111.tar.gz
+    4  ll
+    5  tar -xvzf apache-tomcat-9.0.111.tar.gz
+    6  ll
+    7  cd apache-tomcat-9.0.111
+    8  cd bin/
+    9  ll
+   10  chmod +x startup.sh
+   11  chmod +x shutdown.sh
+   12  ./startup.sh
+   13  ./shutdown.sh
+   14  cd ..
+   15  cd conf
+   16  ll
+   17  vim tomcat-users.xml
+   18  cd ..
+   19  find -name context.xml
+   20  vim webapps/examples/META-INF/context.xml
+   21  vim webapps/host-manager/META-INF/context.xml
+   22  vim webapps/manager/META-INF/context.xml
+   23  cd bin/
+   24  ./shutdown.sh
+   25  ./startup.sh
+   26  hostnamectl set-hostname tomcat.example.com
+   27  bash
+   28  cd /var/lib/jenkins/workspace/
+
+
+docker-commands
+
+1  yum update -y
+    2  yum install docker -y
+    3  systemctl start docker
+    4  systemctl enable docker
+    5  ssh-keygen
+    6  cd .ssh
+    7  cat id_rsa.pub
+    8  vim authorized_keys
+    9  vim /etc/ssh/sshd_config
+   10  systemctl restart sshd
+   11  aws configure
+   12  cd
+   13  aws configure
+   14  aws ecr create-repository --repository-name tomcat-webapp
+   15  ip a s
+   16  vim /etc/hosts
+   17  ping jenkins-server.example.com
+   18  hostnamectl set-hostname docker.example.com
+   19  bash
+   20  mkdir /deploy
+   21  passwd root
+   22  systemctl restart docker
+   23  cd /deploy
+   24  ll
+   25  systemctl restart docker
+   26  systemctl enable docker
+   27  cd
+   28  systemctl restart docker
+   29  systemctl enable docker
+   30  cd /deploy
+   31  ll
+   32  cd
+   33  cd /deploy
+   34  ll
+   35  cd
+   36  cd /deploy/
+   37  ll
+   38  cd
+   39  systemctl restart docker
+   40  systemctl enable docker
+   41  cd /deploy/
+   42  ll
+   43  cd
+   44  cd deploy
+   45  ll
+eksctl delete cluster --name my-cluster
+
+
+
+pipeline {
+    agent any
+    
+    tools {
+        maven 'maven'
+    }
+ 
+    environment {
+        TOMCAT_USER = 'deployer'
+        TOMCAT_PASS = 'deployer'
+        TOMCAT_HOST = '3.92.53.87'
+        TOMCAT_PORT = '8080'
+    }
+ 
+    stages {
+        stage('Clone Repository') {
+            steps {
+                git branch: 'main', url: 'https://github.com/Ankit-10844395/brand-repo.git'
+            }
+        }
+ 
+        stage('Build with Maven') {
+            steps {
+                sh 'mvn clean package -Dmaven.test.failure.ignore=true'
+            }
+        }
+ 
+        stage('Deploy to Tomcat') {
+            steps {
+                sh '''
+                    curl -u $TOMCAT_USER:$TOMCAT_PASS \
+                    --upload-file webapp/target/webapp.war \
+                    "http://$TOMCAT_HOST:$TOMCAT_PORT/manager/text/deploy?path=/sampleapp&update=true"
+                '''
+            }
+        }
+ 
+        stage('Deploy to Docker Host') {
+            steps {
+                sshPublisher(publishers: [
+                    sshPublisherDesc(
+                        configName: 'docker', // Must match SSH config name in Jenkins
+                        transfers: [
+                            sshTransfer(
+                                sourceFiles: '**/*',
+                                removePrefix: '',
+                                remoteDirectory: 'ultima',
+                                execCommand: '''
+                                    cd ultima
+                                    aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 867098306986.dkr.ecr.us-east-1.amazonaws.com
+                                    docker build -t tomcat-webapp .
+                                    docker tag tomcat-webapp:latest 867098306986.dkr.ecr.us-east-1.amazonaws.com/tomcat-webapp:latest
+                                    docker push 867098306986.dkr.ecr.us-east-1.amazonaws.com/tomcat-webapp:latest
+                                '''
+                            )
+                        ]
+                    )
+                ])
+            }
+        }
+         stage('Deploy to EKS') {
+            steps {
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'awsconfig']]) {
+                    sh '''
+                        aws eks update-kubeconfig --region us-east-1 --name my-cluster
+                        kubectl delete -f /new/deployment.yaml
+                        kubectl apply -f /new/deployment.yaml
+                        kubectl apply -f /new/service.yaml
+                        kubectl rollout status deployment/regapp-deployment
+                    '''
+                }
+            }
+        }
+    }
+ 
+    post {
+        success {
+            junit '**/target/surefire-reports/TEST-*.xml'
+            archiveArtifacts artifacts: '**/target/*.war', fingerprint: true
+        }
+    }
+}
+
+
